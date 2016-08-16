@@ -18,12 +18,12 @@ class Index extends React.Component {
 	render(){
 		const { props } = this;
 		const content = props.isInitialDataLoaded
-			? <Main mixClass="page__main"  />
+			? <Main mixClass="catalog-container__catalog"  />
 			: null;
 		return(
-			<div className={( (props.mixClass ? props.mixClass : '') + ' app-page')}>
+			<div className={( (props.mixClass ? props.mixClass : '') + ' catalog-container')}>
 				
-				<Header mixClass="page__header" />
+				<Header mixClass="catalog-container__header" />
 
 				{content}
 			</div>

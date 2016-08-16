@@ -3,7 +3,7 @@
  * Layout
  * ========================================================================== */
 
-.body-container{
+.container{
 	overflow: hidden;
 	position: relative;
 	min-height: 100vh;
@@ -51,6 +51,29 @@
 		right: 0;
 		bottom: 0;
 		z-index: 500;
+	}
+}
+
+/* ==========================================================================
+ * login
+ * ========================================================================== */
+
+.login{
+
+	text-align: center;
+
+	&__title{
+		margin: 0 0 20px;
+
+	}
+
+	&__text{
+		margin: 0 0 20px;
+
+	}
+
+	&__button-placeholder{
+		
 	}
 }
 

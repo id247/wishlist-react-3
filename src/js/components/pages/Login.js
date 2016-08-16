@@ -6,13 +6,25 @@ import Button from '../../components/common/Button';
 import * as asyncActions from '../../actions/async';
 
 const Login = (props) => (
-	<div className={( (props.mixClass ? props.mixClass : '') + ' app-page app-login')}>
+	<div className={( (props.mixClass ? props.mixClass : '') + ' login')}>
 
-		<div className="app-login__button-placeholder">
-		
+		<h1 className="login__title">
+			Страница авторизации
+		</h1>
+
+		<div className="login__text">
+			
+			<p>
+				Нужно оформить
+			</p>
+
+		</div>
+
+		<div className="login__button-placeholder">
+
 			<Button 
 				size="m"
-				color="white"
+				color="yellow"
 				type="button"
 				onClickHandler={props.login}
 			>

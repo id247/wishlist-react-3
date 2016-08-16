@@ -8,32 +8,14 @@ import * as pageActions from '../actions/page';
 import Index from '../components/pages/Index';
 import Login from '../components/pages/Login';
 import ErrorPage from '../components/pages/ErrorPage';
-//import Preview from '../components/pages/Preview';
  
 class Router extends React.Component {
 
 
 	componentWillMount(){
-		// const { props } = this;
-		
-		// history.replace({
-		// 	state: { page: 'index' }
-		// });
-		
-		// this.unlisten = history.listen(location => {
-		//   	console.log(location);
-		// 	if (location.action === 'POP'){
-  //  				//return 'Are you sure you want to leave this page?'
-		//   		if (location.state){
-		//   			location.state.page && props.setPageWithoutHistory(location.state.page);
-		//   		}
-		// 	}
-		// });
-
 	}
 
 	componentWillUnmount() {
-		//this.unlisten();
 	}
 
 	router(){
@@ -43,17 +25,14 @@ class Router extends React.Component {
 
 		switch(pageId){
 			case 'login':
-				page = <Login mixClass="app__page" />;
+				page = <Login mixClass="page__login" />;
 				break;
-			// case 'preview':
-			// 	page = <Preview mixClass="app__page" />;
-			// 	break;			
 			case 'error':
-				page = <ErrorPage mixClass="app__page" />;	
+				page = <ErrorPage mixClass="page__error" />;	
 				break;	
 			case 'index':
 			default: 
-				page = <Index mixClass="app__page" />;	
+				page = <Index mixClass="page__catalog-container" />;	
 		}	
 
 		return page;	
@@ -66,7 +45,7 @@ class Router extends React.Component {
 };
 
 Router.propTypes = {
-
+	index: React.PropTypes.string, 
 };
 
 const mapStateToProps = (state, ownProps) => ({
