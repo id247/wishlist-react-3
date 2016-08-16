@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Button from '../../components/common/Button';
 
-import * as apiActions from '../../actions/api';
+import * as asyncActions from '../../actions/async';
 
 const Login = (props) => (
 	<div className={( (props.mixClass ? props.mixClass : '') + ' app-page app-login')}>
@@ -32,7 +32,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({ 
-	login: () => dispatch(apiActions.login()),
+	login: () => dispatch(asyncActions.login()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

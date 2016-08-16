@@ -19,7 +19,7 @@ module.exports = {
 	},
 
 	resolve: {
-		modulesDirectories: ['node_modules', 'my_modules'],
+		modulesDirectories: ['node_modules'],
 		extentions: ['', '.js'],
 		alias: {
 			appSettings: appSettings,
@@ -34,7 +34,6 @@ module.exports = {
 				loader: 'babel',
 				include: [
 					path.join(__dirname, '/src/js'),
-					path.join(__dirname, '/my_modules'),
 				], 
 				query: {
 					cacheDirectory: true,

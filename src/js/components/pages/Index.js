@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import * as apiActions from '../../actions/api';
+import * as asyncActions from '../../actions/async';
 
-import Users from '../../components/users/Users';
+import Header from '../../components/header/Header';
+import Main from '../../components/main/Main';
 
 class Index extends React.Component {
 
@@ -17,14 +18,14 @@ class Index extends React.Component {
 	render(){
 		const { props } = this;
 		const content = props.isInitialDataLoaded
-			? <Users />
+			? <Main mixClass="page__main"  />
 			: null;
 		return(
 			<div className={( (props.mixClass ? props.mixClass : '') + ' app-page')}>
+				
+				<Header mixClass="page__header" />
+
 				{content}
-				<div style={{float: 'right'}}>
-					<button onClick={props.logout}>logout</button>
-				</div>
 			</div>
 		);
 	}
@@ -36,8 +37,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	init: () => dispatch(apiActions.init()), 
-	logout: () => dispatch(apiActions.logout()), 
+	init: () => dispatch(asyncActions.init()), 
+	logout: () => dispatch(asyncActions.logout()), 
 });
 
 Index.propTypes = {

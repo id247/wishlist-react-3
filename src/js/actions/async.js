@@ -1,13 +1,12 @@
-import { OAuth, API } from '../api';
+import { OAuth, API } from '../async/api';
+import XML from '../async/xml';
 
 import * as initActions from '../actions/init';
 import * as pageActions from '../actions/page';
 import * as loadingActions from '../actions/loading';
 import * as errorActions from '../actions/error';
 import * as userActions from '../actions/user';
-import * as schoolsActions from '../actions/schools';
-import * as classesActions from '../actions/classes';
-import * as usersActions from '../actions/users';
+import * as xmlActions from '../actions/xml';
 
 
 //error handler
@@ -141,6 +140,30 @@ export function setSchoolClases(classes){
 	}
 }
 
+//xml
+
+// export function getXML() {
+
+// 	return dispatch => {	
+// 		dispatch(getFalseXMLStart());
+				
+// 		getFalseXML()
+// 		.then( payload => {
+// 			//console.log(products);
+// 			dispatch(getFalseXMLSuccess(payload.products));
+// 			dispatch(setFalseXMLCategories(payload.categories));
+
+// 			dispatch(menuActions.menuSetCategory(payload.categories[0].id));
+			
+// 			dispatch(wishlistActions.wishlistGetFromCookies());
+// 		})
+// 		.catch( err => {
+// 			console.log(err);
+// 			dispatch(getFalseXMLFail());
+// 		});
+// 	}
+// };
+
 //init
 
 export function init() {
@@ -150,6 +173,14 @@ export function init() {
 		return API.getUser('me')
 		.then( user => {
 			dispatch(setUser(user));
+			return XML.getXML();
+		})
+		.then( payload => {
+			dispatch(xmlActions.xmlProductsAdd(payload.products));
+ 			dispatch(xmlActions.xmlCategoriesAdd(payload.categories));
+
+ 			dispatch(xmlActions.xmlActiveCategorySet(payload.categories[0].id));
+ 			
 			dispatch(initActions.apiInitialDataLoaded());
 			dispatch(loadingActions.loadingHide());
 		})

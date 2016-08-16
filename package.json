@@ -1,8 +1,8 @@
 {
-  "name": "project",
+  "name": "wishlist-react-3",
   "version": "1.0.0",
   "description": "",
-  "cdn": "https://ad.csdnevnik.ru/special/staging/folder/",
+  "cdn": "https://ad.csdnevnik.ru/special/staging/wishlist-3/",
   "main": "gulpfile.js",
   "dependencies": {},
   "devDependencies": {
@@ -40,7 +40,7 @@
     "gulp-watch": "latest",
     "gulp.spritesmith": "latest",
     "hellojs": "^1.13.4",
-    "js-cookie": "^2.1.0",
+    "js-cookie": "^2.1.2",
     "mocha": "^2.5.3",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",

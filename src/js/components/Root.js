@@ -9,11 +9,11 @@ class Root extends React.Component {
 	render() {		
 		return (
 			<Provider store={this.props.store}>
-				<div className="app__content">
+				<div className="page">
 					<Router index="index" />
 					<Loading 
-						mixClass="app__loading"
-						visibleClass="app__loading--visible"
+						mixClass="page__loader"
+						visibleClass="loader--visible"
 					/>
 				</div>
 			</Provider>

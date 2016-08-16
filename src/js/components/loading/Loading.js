@@ -5,9 +5,9 @@ const Loading = (props) => (
 	<div 
 		className={( 	(props.mixClass ? props.mixClass : '') 
 						+ (props.loading && props.visibleClass ? ' ' + props.visibleClass : '') 
-						+ ' app-loading')} 
+						+ ' loader')} 
 	>
-		<div className="app-loading__content">
+		<div className="loader__content">
 			Загрузка...
 		</div>
 	</div>
