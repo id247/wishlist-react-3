@@ -108,6 +108,19 @@ export const API = {
 
 		return sendRequest(options);
 	},
+	sendManyMessages: (messages) => {
+		const options = {
+			path: 'messages/post/many',
+			method: 'post',
+			data: messages,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+			},
+		};
+
+		return sendRequest(options);
+	},
 } 
 
 

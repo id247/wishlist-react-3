@@ -2,32 +2,15 @@
 
 import * as actions from '../actions/wishlist';
 
-function isCorrectItem(item){
-	return ( 	typeof item === 'object' 
-				&& item.id
-				&& Number.isInteger(item.id)
-			);
-}
-
 export function wishlist(state = [], action) {
 	switch (action.type) {
 		case actions.WISHLIST_ADD_ITEMS:
-			if (!Array.isArray(action.payload)){
-				return state;
-			}
-			const items = action.payload.filter( item => isCorrectItem(item) );
-			return 	[...state, ...items];
+			return  action.payload;
 		
 		case actions.WISHLIST_ADD_ITEM:
-			if (!isCorrectItem(action.payload)){
-				return state;
-			}
 			return 	[...state, action.payload];
 		
-		case actions.WISHLIST_DELETE_ITEM:
-			if (!Number.isInteger(action.payload)){
-				return state;
-			}		
+		case actions.WISHLIST_DELETE_ITEM:	
 			return 	state.filter( (product) => ( product.id !== action.payload ) ); 
 
 		default:

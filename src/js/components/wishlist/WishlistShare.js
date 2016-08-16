@@ -1,72 +1,104 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import * as asyncActions from '../../actions/async';
 
 import Button from '../../components/common/Button';
 import Checkbox from '../../components/common/Checkbox';
 
-//class WishlistShare extends React.Component {
-//
-//	render(){
-//		return(
-//			<div className={( (props.mixClass ? props.mixClass : '') + ' class')} id="class">
-//			</div>
-//		);
-//	}
-//}
+class WishlistShare extends React.Component {
 
-const WishlistShare = (props) => (
-	<div className={( (props.mixClass ? props.mixClass : '') + ' wishlist-share')}>
+	shareHandler = () => (e) => {
+		e.preventDefault();
 
-		<div className="wishlist-share__button-placeholder">
+		const { profile, friends, relatives } = this.props.user;
 
-			<Button
-				size="m"
-				color="yellow"
-				//clickHandler={}
-			>
-				Поделиться
-			</Button>
+		var formData = new FormData();
 
-		</div>
+		const messages = relatives.map( (relative, i) => {
 
-		<ul className="wishlist-share__list">
+			return {
+				from: profile.id,
+				to: relative.person.userId,
+				body: 'Текст сообщения',
+			}
+		});
 
-			<li className="wishlist-share__item">
+		formData.append('messages', JSON.stringify(messages));
+		formData.append('messages2', 'sdds');
 
-				<Checkbox
-					name="parents"
-					value="true"
-					checked={true}
-					onChangeHandler={() => {}}
-				>
-					С родителями
-				</Checkbox>
+		console.log(messages);
+		console.log(formData.get('messages'));
+		console.log(formData.get('messages2'));
 
-			</li>
+		if (messages.length === 0){
+			return;
+		}
 
-			<li className="wishlist-share__item">
+		this.props.sendManyMessages(formData);
+	}
 
-				<Checkbox
-					name="friends"
-					value="true"
-					checked={true}
-					onChangeHandler={() => {}}
-				>
-					С друзьями
-				</Checkbox>
+	render(){
+		const { props } = this;
 
-			</li>
+		return(
+			<div className={( (props.mixClass ? props.mixClass : '') + ' wishlist-share')}>
 
-		</ul>
+				<div className="wishlist-share__button-placeholder">
 
-	</div>
-);
+					<Button
+						size="m"
+						color="yellow"
+						onClickHandler={this.shareHandler()}
+					>
+						Поделиться
+					</Button>
+
+				</div>
+
+				<ul className="wishlist-share__list">
+
+					<li className="wishlist-share__item">
+
+						<Checkbox
+							name="parents"
+							value="true"
+							checked={true}
+							onChangeHandler={() => {}}
+						>
+							С родителями
+						</Checkbox>
+
+					</li>
+
+					<li className="wishlist-share__item">
+
+						<Checkbox
+							name="friends"
+							value="true"
+							checked={true}
+							onChangeHandler={() => {}}
+						>
+							С друзьями
+						</Checkbox>
+
+					</li>
+
+				</ul>
+
+			</div>		
+		);
+	}
+}
+
+
 
 const mapStateToProps = (state, ownProps) => ({
+	user: state.user,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+	sendManyMessages: (messages) => dispatch(asyncActions.sendManyMessages(messages)),
 });
 
 WishlistShare.propTypes = {

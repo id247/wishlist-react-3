@@ -51,6 +51,27 @@ export function logout() {
 }
 
 
+//messages
+
+export function sendManyMessages(messages){
+	return dispatch => {
+		dispatch(loadingActions.loadingShow());
+		
+		return API.sendManyMessages(messages)
+		.then( (res) => {
+			console.log(res);
+		})
+		.then( () => {
+
+			dispatch(loadingActions.loadingHide());
+		})
+		.catch( err => { 
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+
 //init
 
 export function init() {
