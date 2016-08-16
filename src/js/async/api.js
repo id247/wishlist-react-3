@@ -59,7 +59,7 @@ function sendRequest(options){
 		dnevnik.api(options)
 		.then(
 			res => {
-				console.log(res);
+				//console.log(res);
 				switch(res.type){
 					case 'tokenRequired':
 					case 'invalidToken':
@@ -70,7 +70,7 @@ function sendRequest(options){
 				}
 			},
 			err => {
-				console.error(err);
+				//console.error(err);
 				reject(new Error('Unknown Error'));
 			}
 		);
@@ -89,7 +89,21 @@ export const OAuth = {
 export const API = {
 	getUser: (userId = 'me') => {
 		const options = {
-			path: 'users/' + userId
+			path: 'users/' + userId,
+		};
+
+		return sendRequest(options);
+	},
+	getUserFrients: (userId = 'me') => {
+		const options = {
+			path: 'users/' + userId + '/friends',
+		};
+
+		return sendRequest(options);
+	},
+	getUserRelatives: (userId = 'me') => {
+		const options = {
+			path: 'users/' + userId + '/relatives',
 		};
 
 		return sendRequest(options);

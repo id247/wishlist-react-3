@@ -13,6 +13,7 @@ const rootReducer = combineReducers({
 	page,
 	error,
 	loading,
+	user,
 	xml,
 	wishlist,
 });

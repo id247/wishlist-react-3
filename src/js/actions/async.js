@@ -50,31 +50,6 @@ export function logout() {
 	}
 }
 
-//user
-
-export function getUser(userId) {
-	return dispatch => {	
-		dispatch(loadingActions.loadingShow());
-				
-		return API.getUser(userId)
-		.then( user => {
-			dispatch(loadingActions.loadingHide());
-		})
-		.catch( err => {
-			dispatch(loadingActions.loadingHide());
-		});
-	}
-}
-
-export function setUser(user){
-	return dispatch => {	
-		if (!user){
-			throw new Error('no-user');
-		}
-		dispatch(userActions.userSet(user));	
-	}
-}
-
 
 //init
 
@@ -82,22 +57,33 @@ export function init() {
 	return dispatch => {
 		dispatch(loadingActions.loadingShow());	
 		
-		return API.getUser('me')
-		.then( user => {
-			dispatch(setUser(user));
-			return XML.getXML();
-		})
-		.then( payload => {
-			dispatch(xmlActions.xmlProductsAdd(payload.products));
- 			dispatch(xmlActions.xmlCategoriesAdd(payload.categories));
+		const p0 = API.getUser();
+		const p1 = API.getUserFrients();
+		const p2 = API.getUserRelatives();
+		const p3 = XML.getXML();
 
- 			dispatch(xmlActions.xmlActiveCategorySet(payload.categories[0].id));
- 			
+		return Promise.all([p0,p1,p2,p3])
+		.then( values => {
+			const user = values[0];
+			const friends = values[1];
+			const relatives = values[2];
+			const xml = values[3];
+
+			dispatch(userActions.userSet(user));
+			dispatch(userActions.userFriendsSet(friends));
+			dispatch(userActions.userRelativesSet(relatives));
+
+			dispatch(xmlActions.xmlProductsAdd(xml.products));
+ 			dispatch(xmlActions.xmlCategoriesAdd(xml.categories));
+
+ 			dispatch(xmlActions.xmlActiveCategorySet(xml.categories[0].id));
+		})
+		.then( () => {
 			dispatch(initActions.apiInitialDataLoaded());
 			dispatch(loadingActions.loadingHide());
 		})
-		.catch( err => {
-			dispatch(catchError(err));
+		.catch( err => { 
+			dispatch(catchError(err)); 
 		});
 	}
 }

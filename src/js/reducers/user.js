@@ -1,9 +1,9 @@
-// import { combineReducers } from 'redux';
+ import { combineReducers } from 'redux';
 
 import * as actions from '../actions/user';
 
 
-export function user(state = false, action) {
+export function profile(state = false, action) {
 	switch (action.type) {
 		case actions.USER_SET:
 			return 	action.payload;			
@@ -14,6 +14,29 @@ export function user(state = false, action) {
 	}
 }
 
-// export const profile = combineReducers({
-// 	user,
-// });
+export function friends(state = [], action) {
+	switch (action.type) {
+		case actions.USER_FRIENDS_SET:
+			return 	action.payload;			
+		case actions.USER_UNSET:
+			return 	[];
+		default:
+			return state;
+	}
+}
+export function relatives(state = [], action) {
+	switch (action.type) {
+		case actions.USER_RELATIVES_SET:
+			return 	action.payload;			
+		case actions.USER_UNSET:
+			return 	[];
+		default:
+			return state;
+	}
+}
+
+export const user = combineReducers({
+	profile,
+	friends,
+	relatives,
+});
