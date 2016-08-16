@@ -10,7 +10,7 @@ const Checkbox = (props) => (
 			checked={props.checked}	
 			onChange={props.onChangeHandler}
 		/>
-		{props.title}
+		{props.children}
 	</label>
 );
 
@@ -20,7 +20,6 @@ Checkbox.propTypes = {
 	checked: React.PropTypes.bool.isRequired,
 	name: React.PropTypes.string.isRequired,
 	value: React.PropTypes.string.isRequired,
-	title: React.PropTypes.string.isRequired,
 };
 
 export default Checkbox;

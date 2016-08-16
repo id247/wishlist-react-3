@@ -6,6 +6,8 @@ import WishlistEmpty from './WishlistEmpty';
 import WishlistFull from './WishlistFull';
 import WishlistCart from './WishlistCart';
 
+import * as wishlistActions from '../../actions/wishlist';
+
 class Wishlist extends React.Component {
 	
 	constructor(props){
@@ -14,13 +16,19 @@ class Wishlist extends React.Component {
     	this._scrollToWishlist = this._scrollToWishlist.bind(this);  
 	}
 
+	componentWillMount() {
+		this.props.wishlistGetFromCookies();
+	}
+
 	componentDidMount() {
 		document.addEventListener('scroll', this._updateCartVisibility);
 	}
+
 	componentDidUpdate() {
 		this._updateCartVisibility();
 		this._popCart();
 	}
+
 	componentWillUnmount() {
 		document.removeEventListener('scroll', this._updateCartVisibility);
 	}
@@ -110,6 +118,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
+	wishlistGetFromCookies: () => dispatch(wishlistActions.wishlistGetFromCookies()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wishlist);

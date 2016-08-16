@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as wishlistActions from '../../actions/wishlist';
 
 import WishlistItem from './WishlistItem';
+import WishlistShare from './WishlistShare';
 
 const WishlistFull = (props) => (
 	<div className="wishlist__full">
@@ -25,16 +26,7 @@ const WishlistFull = (props) => (
 
 		</ul>
 
-		<div className="wishlist__button-placeholder">
-
-			<a 	href={props.ozonLink} 
-				className="wishlist__button button button--yellow button--m" 
-				target="_blank"
-			>
-				Купить на OZON.RU
-			</a>
-
-		</div>
+		<WishlistShare mixClass="wishlist__share" />
 
 	</div>
 );
