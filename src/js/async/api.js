@@ -94,7 +94,7 @@ export const API = {
 
 		return sendRequest(options);
 	},
-	getUserFrients: (userId = 'me') => {
+	getUserFriends: (userId = 'me') => {
 		const options = {
 			path: 'users/' + userId + '/friends',
 		};
