@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Перенаправление на проект...</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+</head>
+<body>
+	<h3>Пожалуйста, закройте это окно для проложения.</h3>
+	<script>
+		window.onbeforeunload = function(){
+			document.getElementsByTagName('h3')[0].innerHTML='Перенаправляем на страницу проекта, пожалуйста, полождите...';
+		}
+	</script>
+	@@if (server !== "local"){
+	<script src="assets/js/modal.js"></script>
+	}
+	@@if (server === "local"){	
+	<script src="http://localhost:3000/assets/js/modal.js"></script>
+	}
+</body>
+</html>
