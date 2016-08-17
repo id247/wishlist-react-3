@@ -12,25 +12,21 @@ import * as xmlActions from '../actions/xml';
 //error handler
 
 export function catchError(err){
-	return dispatch => {	
-		console.error(err.message,':', err.description);
+	return dispatch => {
+		if (err.description){	
+			console.error(err.message,':', err.description);
+		}else{
+			console.error(err);
+		}
 		switch(err.message){
 			case 'Unauthorized' :				
 				dispatch(logout());
 				dispatch(pageActions.setPageWithoutHistory('login'));
 				break;
 
-			case 'ResourceUnavailable' :
-				//?
-				break;
-
-			case 'Bad Request' :
-				//?
-				break;
-
 			default:
-				dispatch(errorActions.setError(err.message));
-				dispatch(pageActions.setPageWithoutHistory('error'));
+				//dispatch(errorActions.setError(err.message));
+				//dispatch(pageActions.setPageWithoutHistory('error'));
 		}
 
 		dispatch(loadingActions.loadingHide());

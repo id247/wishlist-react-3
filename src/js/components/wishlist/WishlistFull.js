@@ -9,7 +9,7 @@ import WishlistBuyButton from './WishlistBuyButton';
 import WishlistShare from './WishlistShare';
 
 const WishlistFull = (props) => {
-	const actions = props.roles.indexOf('EduStudent') > -1
+	const actions = props.roles && props.roles.indexOf('EduStudent') > -1
 					? <WishlistShare mixClass="wishlist__share" />
 					: <WishlistBuyButton ozonLink={props.ozonLink} />
 	return(
