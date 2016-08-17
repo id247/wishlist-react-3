@@ -1,23 +1,12 @@
 'use strict';
 
-import OAuthProvider from '../api/hello.js';
 import Ajax from '../api/ajax.js';
-
 
 function paramsError(description){
 	return Promise.reject(new Error(description));
 }
 
-export const OAuth = {
-	login: () => {
-		return OAuthProvider.login();
-	},
-	logout: () => {
-		return OAuthProvider.logout();
-	},
-} 
-
-export const API = {
+export default {
 	getUser: (userId = 'me') => {
 		const options = {
 			path: 'users/' + userId,

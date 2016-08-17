@@ -1,4 +1,5 @@
-import { OAuth, API } from '../async/api';
+import API from '../async/api';
+import OAuth from '../async/oauth';
 import XML from '../async/xml';
 
 import * as initActions from '../actions/init';
