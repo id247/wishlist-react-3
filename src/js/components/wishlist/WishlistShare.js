@@ -61,7 +61,7 @@ class WishlistShare extends React.Component {
 		const text = 'Текст о том что создан список и <a href="#">ссылка</a>';
 		
 		formData.append('body', text);
-		formData.append('file', 48334);
+		formData.append('file', 37017);
 
 		this.props.postToWall(userId, formData);
 	}
