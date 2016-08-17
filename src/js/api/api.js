@@ -1,6 +1,6 @@
 'use strict';
 
-import Ajax from '../api/ajax.js';
+import Ajax from './ajax.js';
 
 function paramsError(description){
 	return Promise.reject(new Error(description));

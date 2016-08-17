@@ -13,7 +13,7 @@ module.exports = {
 	},
 	output: {
 		path: path.join(__dirname, '/production/assets/js'),
-		filename: 'mosreg.js',
+		filename: '[name].js',
 		publicPath: path.join(__dirname, '/production/assets/js'),
 		pathinfo: true
 	},

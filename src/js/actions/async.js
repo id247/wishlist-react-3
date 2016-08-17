@@ -1,6 +1,6 @@
-import API from '../async/api';
-import OAuth from '../async/oauth';
-import XML from '../async/xml';
+import API from '../api/api';
+import OAuth from '../api/oauth';
+import XML from '../api/xml';
 
 import * as initActions from '../actions/init';
 import * as pageActions from '../actions/page';

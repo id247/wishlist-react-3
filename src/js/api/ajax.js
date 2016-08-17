@@ -1,7 +1,7 @@
 //because hello.api() is piease of shit
 import 'whatwg-fetch';
 
-import OAuthProvider from '../api/hello.js';
+import OAuthProvider from './hello.js';
 
 import { APIoptions } from 'appSettings';
 

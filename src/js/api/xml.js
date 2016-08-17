@@ -67,8 +67,6 @@ function getXML(){
 	return getFalseXML();
 }
 
-const XML = {
+export default {
 	getXML,
 }
-
-export default XML;

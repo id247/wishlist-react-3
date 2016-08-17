@@ -1,4 +1,4 @@
-import OAuthProvider from '../api/hello.js';
+import OAuthProvider from './hello.js';
 
 export default {
 	login: () => {
