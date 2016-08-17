@@ -1,5 +1,4 @@
 //because hello.api() is piease of shit
-import 'whatwg-fetch';
 
 import OAuthProvider from './hello.js';
 

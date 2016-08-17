@@ -7,6 +7,7 @@ module.exports = {
 	devtool: '#inline-source-map',
 	entry: {
 		local: [
+			'whatwg-fetch',
 			'webpack-dev-server/client?http://localhost:3000',
 			'webpack/hot/only-dev-server',
 			'./src/js/index'
