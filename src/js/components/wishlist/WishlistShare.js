@@ -24,7 +24,7 @@ class WishlistShare extends React.Component {
 	}
 
 	submitInvites(){
-		const formData = new FormData();
+		const formData = new URLSearchParams();
 		const { profile, friends, relatives } = this.props.user;
 		const { state } = this;
 		
@@ -47,21 +47,26 @@ class WishlistShare extends React.Component {
 			return;
 		}
 
-		formData.append('userIDs[]', allIds);
+		allIds.map( (id, i) => {
+			formData.append('userIDs[' + i + ']', id);
+		});		
 		formData.append('message', 'test');
 
 		this.props.sendInvites(formData);
 	}
 
 	postToWall(){
-		const formData = new FormData();
+		const formData = new URLSearchParams();
 		const userId = this.props.user.profile.id_str;
 		const text = 'Текст о том что создан список и <a href="#">ссылка</a>';
 		
 		formData.append('body', text);
+		formData.append('file', 48334);
 
 		this.props.postToWall(userId, formData);
 	}
+
+
 
 	//event handlers
 
@@ -78,6 +83,7 @@ class WishlistShare extends React.Component {
 		e.preventDefault();
 		this.postToWall();
 	}
+
 
 	render(){
 		const { props, state } = this;

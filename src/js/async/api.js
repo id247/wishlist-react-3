@@ -94,7 +94,7 @@ function sendRequest(options){
 	options.method = options.method ? options.method : 'get';
 	
 	options.headers = {
-		'Accept': 'application/json',
+		//'Accept': 'application/json',
 		'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
 	};
 
@@ -102,7 +102,20 @@ function sendRequest(options){
 
 	return fetch(url, options)
 	.then( response => {
-		return response.json();
+		console.log(response);
+		switch(response.status){
+			case 204: 
+				return 'ok';
+				break;
+			case 200: 
+			case 400: 
+			case 401: 
+				return response.json();
+				break;
+			default:
+				throw new Error(response.status + ': ' + response.statusText);
+		}
+		
 	})
 	.then( res => {
 		console.log(res);
@@ -165,6 +178,18 @@ export const API = {
 	getUserRelatives: (userId = 'me') => {
 		const options = {
 			path: 'users/' + userId + '/relatives',
+		};
+
+		return sendRequest(options);
+	},
+	sendMessage: (data) => {
+		if (!data){
+			return paramsError('no data in API.sendMessage');
+		}
+		const options = {
+			path: 'messages',
+			method: 'post',
+			body: data,
 		};
 
 		return sendRequest(options);

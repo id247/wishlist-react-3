@@ -66,6 +66,24 @@ export function logout() {
 
 //messages
 
+export function sendMessage(data){
+	return dispatch => {
+		dispatch(loadingActions.loadingShow());
+		
+		return API.sendMessage(data)
+		.then( (res) => {
+			console.log(res);
+		})
+		.then( () => {
+
+			dispatch(loadingActions.loadingHide());
+		})
+		.catch( err => { 
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
 export function sendInvites(data){
 	return dispatch => {
 		dispatch(loadingActions.loadingShow());
@@ -93,6 +111,9 @@ export function postToWall(userId, data){
 		return API.postToWall(userId, data)
 		.then( (res) => {
 			console.log(res);
+			if (res === 'ok'){
+				console.log('Сохранили на стеночку');
+			}	
 		})
 		.then( () => {
 
