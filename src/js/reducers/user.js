@@ -6,7 +6,7 @@ import * as actions from '../actions/user';
 export function profile(state = false, action) {
 	switch (action.type) {
 		case actions.USER_SET:
-			return 	action.payload;			
+			return 	action.payload ? action.payload : state;
 		case actions.USER_UNSET:
 			return 	false;
 		default:
@@ -17,7 +17,7 @@ export function profile(state = false, action) {
 export function friends(state = [], action) {
 	switch (action.type) {
 		case actions.USER_FRIENDS_SET:
-			return 	action.payload;			
+			return 	action.payload ? action.payload : state;
 		case actions.USER_UNSET:
 			return 	[];
 		default:
@@ -27,7 +27,7 @@ export function friends(state = [], action) {
 export function relatives(state = [], action) {
 	switch (action.type) {
 		case actions.USER_RELATIVES_SET:
-			return 	action.payload;			
+			return 	action.payload ? action.payload : state;
 		case actions.USER_UNSET:
 			return 	[];
 		default:

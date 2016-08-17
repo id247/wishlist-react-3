@@ -8,38 +8,79 @@ import Checkbox from '../../components/common/Checkbox';
 
 class WishlistShare extends React.Component {
 
-	shareHandler = () => (e) => {
-		e.preventDefault();
+	constructor(){
+		super();
 
-		const { profile, friends, relatives } = this.props.user;
+		this.state = {
+			friends: true,
+			relatives: true,
+		}
+	}
 
-		var formData = new FormData();
-
-		const messages = relatives.map( (relative, i) => {
-
-			return {
-				from: profile.id,
-				to: relative.person.userId,
-				body: 'Текст сообщения',
-			}
+	updateCheckbox(checkboxId){
+		this.setState({ 
+			[checkboxId]: !this.state[checkboxId], 
 		});
+	}
 
-		formData.append('messages', JSON.stringify(messages));
-		formData.append('messages2', 'sdds');
+	submitInvites(){
+		const formData = new FormData();
+		const { profile, friends, relatives } = this.props.user;
+		const { state } = this;
+		
+		let relativesIds = [];
+		let friendsIds = [];
+		let allIds = [];
 
-		console.log(messages);
-		console.log(formData.get('messages'));
-		console.log(formData.get('messages2'));
 
-		if (messages.length === 0){
+		if (state.relatives){
+			relativesIds = relatives.map( relative => relative.person.userId );
+		}
+
+		if (state.friends){
+			friendsIds = friends;		
+		}
+
+		allIds = [...relativesIds, ...friendsIds];
+
+		if (allIds.length === 0){
 			return;
 		}
 
-		this.props.sendManyMessages(formData);
+		formData.append('userIDs[]', allIds);
+		formData.append('message', 'test');
+
+		this.props.sendInvites(formData);
+	}
+
+	postToWall(){
+		const formData = new FormData();
+		const userId = this.props.user.profile.id_str;
+		const text = 'Текст о том что создан список и <a href="#">ссылка</a>';
+		
+		formData.append('body', text);
+
+		this.props.postToWall(userId, formData);
+	}
+
+	//event handlers
+
+	chekboxChangeHandler = (checkboxId) => (e) => {
+		this.updateCheckbox(checkboxId);
+	}
+
+	submitInvitesHandler = () => (e) => {
+		e.preventDefault();
+		this.submitInvites();
+	}
+
+	postToWallHandler = () => (e) => {
+		e.preventDefault();
+		this.postToWall();
 	}
 
 	render(){
-		const { props } = this;
+		const { props, state } = this;
 
 		return(
 			<div className={( (props.mixClass ? props.mixClass : '') + ' wishlist-share')}>
@@ -49,7 +90,9 @@ class WishlistShare extends React.Component {
 					<Button
 						size="m"
 						color="yellow"
-						onClickHandler={this.shareHandler()}
+						block={true}
+						disabled={(!state.relatives && !state.friends)}
+						onClickHandler={this.submitInvitesHandler()}
 					>
 						Поделиться
 					</Button>
@@ -63,8 +106,8 @@ class WishlistShare extends React.Component {
 						<Checkbox
 							name="parents"
 							value="true"
-							checked={true}
-							onChangeHandler={() => {}}
+							checked={state.relatives}
+							onChangeHandler={this.chekboxChangeHandler('relatives')}
 						>
 							С родителями
 						</Checkbox>
@@ -76,8 +119,8 @@ class WishlistShare extends React.Component {
 						<Checkbox
 							name="friends"
 							value="true"
-							checked={true}
-							onChangeHandler={() => {}}
+							checked={state.friends}
+							onChangeHandler={this.chekboxChangeHandler('friends')}
 						>
 							С друзьями
 						</Checkbox>
@@ -85,6 +128,19 @@ class WishlistShare extends React.Component {
 					</li>
 
 				</ul>
+
+				<div className="wishlist-share__button-placeholder">
+
+					<Button
+						size="m"
+						color="yellow"
+						block={true}
+						onClickHandler={this.postToWallHandler()}
+					>
+						Сохранить на стену
+					</Button>
+
+				</div>
 
 			</div>		
 		);
@@ -98,7 +154,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	sendManyMessages: (messages) => dispatch(asyncActions.sendManyMessages(messages)),
+	sendInvites: (data) => dispatch(asyncActions.sendInvites(data)),
+	postToWall: (userId, data) => dispatch(asyncActions.postToWall(userId, data)),
 });
 
 WishlistShare.propTypes = {

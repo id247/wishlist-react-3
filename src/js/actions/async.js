@@ -12,15 +12,27 @@ import * as xmlActions from '../actions/xml';
 //error handler
 
 export function catchError(err){
-	console.error(err);
 	return dispatch => {	
-		if (err.message === 'Unauthorized'){
-			dispatch(logout());
-			dispatch(pageActions.setPageWithoutHistory('login'));
-		}else{
-			dispatch(errorActions.setError(err.message));
-			dispatch(pageActions.setPageWithoutHistory('error'));
+		console.error(err.message,':', err.description);
+		switch(err.message){
+			case 'Unauthorized' :				
+				dispatch(logout());
+				dispatch(pageActions.setPageWithoutHistory('login'));
+				break;
+
+			case 'ResourceUnavailable' :
+				//?
+				break;
+
+			case 'Bad Request' :
+				//?
+				break;
+
+			default:
+				dispatch(errorActions.setError(err.message));
+				dispatch(pageActions.setPageWithoutHistory('error'));
 		}
+
 		dispatch(loadingActions.loadingHide());
 	}
 }
@@ -46,6 +58,7 @@ export function logout() {
 	return dispatch => {
 		OAuth.logout();
 		dispatch(userActions.userUnset());
+		dispatch(initActions.apiInitialDataDelete());
 		dispatch(pageActions.setPageWithoutHistory('login'));
 	}
 }
@@ -53,11 +66,31 @@ export function logout() {
 
 //messages
 
-export function sendManyMessages(messages){
+export function sendInvites(data){
 	return dispatch => {
 		dispatch(loadingActions.loadingShow());
 		
-		return API.sendManyMessages(messages)
+		return API.sendInvites(data)
+		.then( (res) => {
+			console.log(res);
+		})
+		.then( () => {
+
+			dispatch(loadingActions.loadingHide());
+		})
+		.catch( err => { 
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+//wall
+
+export function postToWall(userId, data){
+	return dispatch => {
+		dispatch(loadingActions.loadingShow());
+		
+		return API.postToWall(userId, data)
 		.then( (res) => {
 			console.log(res);
 		})
@@ -91,6 +124,7 @@ export function init() {
 			return Promise.all([p0,p1,p2]);
 		})
 		.then( values => {
+			console.log(values);
 			const user = values[0];
 			const friends = values[1];
 			const relatives = values[2];

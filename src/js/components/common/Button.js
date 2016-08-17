@@ -11,6 +11,7 @@ const Button = (props) => (
 					)}
 		type={props.type}
 		onClick={props.onClickHandler}
+		disabled={props.disabled}
 	>
 		{props.children}
 	</button>
@@ -22,6 +23,7 @@ Button.propTypes = {
 	color: React.PropTypes.string,
 	type: React.PropTypes.string,
 	block: React.PropTypes.bool,
+	disabled: React.PropTypes.bool,
 
 	onClickHandler: React.PropTypes.func,
 };
