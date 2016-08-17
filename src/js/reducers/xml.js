@@ -6,7 +6,7 @@ import * as actions from '../actions/xml';
 export function products(state = [], action) {
 	switch (action.type) {
 		case actions.XML_PRODUCTS_ADD:
-			return [...state, ...action.payload];			
+			return action.payload;			
 		default:
 			return state;
 	}
@@ -14,7 +14,7 @@ export function products(state = [], action) {
 export function categories(state = [], action) {
 	switch (action.type) {
 		case actions.XML_CATEGORIES_ADD:
-			return [...state, ...action.payload];			
+			return action.payload;			
 		default:
 			return state;
 	}

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import * as asyncActions from '../../actions/async';
 
+import URLSearchParams from 'url-search-params';
+
 import Button from '../../components/common/Button';
 import Checkbox from '../../components/common/Checkbox';
 
@@ -52,7 +54,7 @@ class WishlistShare extends React.Component {
 		});		
 		formData.append('message', 'test');
 
-		this.props.sendInvites(formData);
+		this.props.sendInvites(formData.toString());
 	}
 
 	postToWall(){
@@ -63,7 +65,7 @@ class WishlistShare extends React.Component {
 		formData.append('body', text);
 		formData.append('file', 37017);
 
-		this.props.postToWall(userId, formData);
+		this.props.postToWall(userId, formData.toString());
 	}
 
 

@@ -1,5 +1,6 @@
 'use strict';
 
+import 'whatwg-fetch';
 import hello from '../../../node_modules/hellojs/dist/hello.js';
 
 import { OAuthOptions, APIoptions } from 'appSettings';
