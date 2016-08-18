@@ -1,4 +1,4 @@
-//because hello.api() is piease of shit
+//because hello.api() is piece of shit
 
 import OAuthProvider from './hello.js';
 
