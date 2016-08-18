@@ -23,9 +23,15 @@ class Index extends React.Component {
 		return(
 			<div className={( (props.mixClass ? props.mixClass : '') + ' catalog-container')}>
 				
-				<Header mixClass="catalog-container__header" />
-
-				{content}
+				
+				<button
+					onClick={e => {
+						e.preventDefault();
+						props.getClassParents();
+					}}
+				>
+					getClassParents
+				</button>
 			</div>
 		);
 	}
@@ -39,6 +45,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	init: () => dispatch(asyncActions.init()), 
 	logout: () => dispatch(asyncActions.logout()), 
+	getClassParents: () => dispatch(asyncActions.getClassParents()), 
 });
 
 Index.propTypes = {

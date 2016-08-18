@@ -28,6 +28,43 @@ export default {
 
 		return Ajax(options);
 	},
+	getUserSchools: (userId = 'me') => {
+		const options = {
+			path: 'users/' + userId + '/schools',
+		};
+
+		return Ajax(options);
+	},
+	getUserChildrenIds: () => {
+		const options = {
+			path: 'users/me/children',
+		};
+
+		return Ajax(options);
+	},
+	getPersonEduGroupsBySchool: (personId, schoolId) => {
+		if (!personId){
+			return paramsError('no personId in API.getPersonEduGroupsBySchool');
+		}
+		if (!schoolId){
+			return paramsError('no schoolId in API.getPersonEduGroupsBySchool');
+		}
+		const options = {
+			path: 'persons/' + personId + '/schools/' + schoolId + '/edu-groups',
+		};
+
+		return Ajax(options);
+	},
+	getEduGroupPersons: (eduGroupId) => {
+		if (!eduGroupId){
+			return paramsError('no eduGroupId in API.getEduGroupPersons');
+		}
+		const options = {
+			path: 'edu-groups/' + eduGroupId + '/persons',
+		};
+
+		return Ajax(options);
+	},
 	sendMessage: (data) => {
 		if (!data){
 			return paramsError('no data in API.sendMessage');
