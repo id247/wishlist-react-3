@@ -72,15 +72,11 @@ export function sendInvites(sendToFriends = true, sendToRelatives = true){
 			return false;
 		}
 		
-		const promises = [];
-
-		messagesArray.map( messages => {
-			promises.push(API.sendInvites(messages));
-		});
+		const sendInvitesPromises = messagesArray.map( messages => API.sendInvites(messages) );
 
 		dispatch(shareActions.shareMessageClearAll('messages'));
 
-		return Promise.all(promises)
+		return Promise.all(sendInvitesPromises)
 		.then( (results) => {
 			dispatch(shareActions.shareMessageAdd('messages', 'Сообщения отправлены'));
 		})
@@ -226,15 +222,11 @@ export function getInitialData() {
 		})
 		.then( data => {
 			const friends = data[1];
-			const promises = [];
+			const getUserPromises = friends.map( friendId => API.getUser(friendId) );
 			
 			dispatch(setUserData(data));
-			
-			friends.map( friendId => {
-				promises.push(API.getUser(friendId));
-			});
 
-			return Promise.all(promises);
+			return Promise.all(getUserPromises);
 		})
 		.then( (friends) => {			
 			dispatch(userActions.userFriendsSet(friends));
