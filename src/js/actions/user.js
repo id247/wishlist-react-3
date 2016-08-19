@@ -16,6 +16,16 @@ export function userUnset() {
 };
 
 
+export const USER_FRIENDS_IDS_SET = 'USER_FRIENDS_IDS_SET';
+
+export function userFriendsIdsSet(friendsIds) {
+	return {
+		type: USER_FRIENDS_IDS_SET,
+		payload: friendsIds
+	}
+};
+
+
 export const USER_FRIENDS_SET = 'USER_FRIENDS_SET';
 
 export function userFriendsSet(friends) {

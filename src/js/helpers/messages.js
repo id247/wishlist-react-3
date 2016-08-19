@@ -24,7 +24,9 @@ function createMessages(peopleIds, message){
 export function createMessagesArray(state, sendToFriends, sendToRelatives){
 
 	const relativesIds = state.user.relatives.map( relative => relative.person.userId );
-	const friendsIds = state.user.friends;
+	const friendsIds = state.user.friends	
+						.filter( friend => ( friend.sex === state.user.profile.sex ) )
+						.map( friend => friend.id_str );
 
 	const relativesText = 'Текст о том что создан список и <a href="' + generateLink(state.wishlist, true) + '">ссылка</a>';
 	const friendsText = 'Текст о том что создан список и <a href="' + generateLink(state.wishlist) +'">ссылка</a>';

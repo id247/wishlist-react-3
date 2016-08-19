@@ -187,7 +187,7 @@ export function setUserData(data) {
 		const relatives = data[2];
 
 		dispatch(userActions.userSet(user));
-		dispatch(userActions.userFriendsSet(friends));
+		dispatch(userActions.userFriendsIdsSet(friends));
 		dispatch(userActions.userRelativesSet(relatives));
 	}
 }
@@ -225,7 +225,19 @@ export function getInitialData() {
  			return getUserDataPromises();
 		})
 		.then( data => {
+			const friends = data[1];
+			const promises = [];
+			
 			dispatch(setUserData(data));
+			
+			friends.map( friendId => {
+				promises.push(API.getUser(friendId));
+			});
+
+			return Promise.all(promises);
+		})
+		.then( (friends) => {			
+			dispatch(userActions.userFriendsSet(friends));
 		})
 		.then( () => {			
 			dispatch(loadingActions.loadingHide());

@@ -14,6 +14,17 @@ export function profile(state = false, action) {
 	}
 }
 
+export function friendsIds(state = [], action) {
+	switch (action.type) {
+		case actions.USER_FRIENDS_IDS_SET:
+			return 	action.payload ? action.payload : state;
+		case actions.USER_UNSET:
+			return 	[];
+		default:
+			return state;
+	}
+}
+
 export function friends(state = [], action) {
 	switch (action.type) {
 		case actions.USER_FRIENDS_SET:
@@ -24,6 +35,7 @@ export function friends(state = [], action) {
 			return state;
 	}
 }
+
 export function relatives(state = [], action) {
 	switch (action.type) {
 		case actions.USER_RELATIVES_SET:
@@ -38,5 +50,6 @@ export function relatives(state = [], action) {
 export const user = combineReducers({
 	profile,
 	friends,
+	friendsIds,
 	relatives,
 });
