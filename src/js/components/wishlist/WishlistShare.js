@@ -62,7 +62,7 @@ class WishlistShare extends React.Component {
 						size="m"
 						color="yellow"
 						block={true}
-						disabled={(!state.relatives && !state.friends)}
+						disabled={(!state.relatives && !state.friends && !props.share.loading.messages)}
 						onClickHandler={this.submitInvitesHandler()}
 					>
 						Поделиться
@@ -100,16 +100,25 @@ class WishlistShare extends React.Component {
 
 				</ul>
 
+				<div className="wishlist-share__message">
+					{props.share.message.messages}
+				</div>
+
 				<div className="wishlist-share__button-placeholder">
 
 					<Button
 						size="m"
 						color="yellow"
 						block={true}
+						disabled={props.share.loading.wall}
 						onClickHandler={this.postToWallHandler()}
 					>
 						Сохранить на стену
 					</Button>
+
+					<div className="wishlist-share__message">
+						{props.share.message.wall}
+					</div>
 
 				</div>
 
@@ -122,6 +131,7 @@ class WishlistShare extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
 	user: state.user,
+	share: state.share,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

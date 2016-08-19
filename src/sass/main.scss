@@ -207,6 +207,7 @@
 	&__button-placeholder{
 		text-align: center;
 	}
+
 }
 
 /* ==========================================================================
@@ -553,6 +554,14 @@
 
 	&__item{
 		margin: 0 0 10px;
+	}
+
+	&__message{
+		margin: 10px 0 10px;
+		text-align: center;
+		&:last-child{
+			margin-bottom: 0;
+		}
 	}
 }
 

@@ -7,6 +7,7 @@ import { user } from './user';
 import { loading } from './loading';
 import { xml } from './xml';
 import { wishlist } from './wishlist';
+import { share } from './share';
 
 const rootReducer = combineReducers({
 	init,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
 	user,
 	xml,
 	wishlist,
+	share,
 });
 
 export default rootReducer;

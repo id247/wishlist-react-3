@@ -8,6 +8,7 @@ import * as loadingActions from '../actions/loading';
 import * as errorActions from '../actions/error';
 import * as userActions from '../actions/user';
 import * as xmlActions from '../actions/xml';
+import * as shareActions from '../actions/share';
 
 import * as messagesHelpers from '../helpers/messages';
 
@@ -21,18 +22,6 @@ export function catchError(err){
 		}else{
 			console.error(err);
 		}
-		switch(err.message){
-			case 'Unauthorized' :				
-				//dispatch(logout());
-				//dispatch(pageActions.setPageWithoutHistory('login'));
-				break;
-
-			default:
-				//dispatch(errorActions.setError(err.message));
-				//dispatch(pageActions.setPageWithoutHistory('error'));
-		}
-
-		dispatch(loadingActions.loadingHide());
 	}
 }
 
@@ -44,10 +33,10 @@ export function login() {
 		
 		return OAuth.login()
 		.then( () => {
-			dispatch(pageActions.setPageWithoutHistory('index'));
+			//dispatch(pageActions.setPageWithoutHistory('index'));
 			dispatch(loadingActions.loadingHide());	
 		},(err) => {
-			console.error(err);
+			dispatch(catchError(err));
 			dispatch(loadingActions.loadingHide());
 		});
 	}
@@ -80,6 +69,7 @@ export function sendMessage(data){
 		})
 		.catch( err => { 
 			dispatch(catchError(err)); 
+			dispatch(loadingActions.loadingHide());
 		});
 	}
 }
@@ -107,18 +97,20 @@ export function sendInvites(sendToFriends = true, sendToRelatives = true){
 			promises.push(API.sendInvites(messages));
 		});
 
-		dispatch(loadingActions.loadingShow());
+		dispatch(shareActions.shareLoadingShow('messages'));
 
 		return Promise.all(promises)
 		.then( (results) => {
-			console.log(results);
+			dispatch(shareActions.shareMessageAdd('messages', 'Сообщения отправлены'));
 		})
 		.then( () => {
 
-			dispatch(loadingActions.loadingHide());
+			dispatch(shareActions.shareLoadingHide('messages'));
 		})
 		.catch( err => { 
 			dispatch(catchError(err)); 
+			dispatch(shareActions.shareLoadingHide('messages'));
+			dispatch(shareActions.shareMessageAdd('messages', 'Ошибка, попробуйте еще раз'));
 		});
 	}
 }
@@ -140,7 +132,7 @@ export function sendInvitesAfterLogin(sendToFriends, sendToRelatives) {
 		.then( () => {
 			dispatch(loadingActions.loadingHide());	
 		},(err) => {
-			console.error(err);
+			dispatch(catchError(err)); 	
 			dispatch(loadingActions.loadingHide());
 		});
 	}
@@ -161,21 +153,22 @@ export function postToWall(){
 
 		const formData = messagesHelpers.createMessageToWall(state);
 
-		dispatch(loadingActions.loadingShow());
+		dispatch(shareActions.shareLoadingShow('wall'));
 		
 		return API.postToWall(state.user.profile.id_str, formData)
 		.then( (res) => {
-			console.log(res);
-			if (res === 'ok'){
-				console.log('Сохранили на стеночку');
+			if (res !== 'ok'){
+				throw new Error('post to wall fail - no ok');
 			}	
+			dispatch(shareActions.shareMessageAdd('wall', 'Сохранили на стеночку'));
 		})
 		.then( () => {
-
-			dispatch(loadingActions.loadingHide());
+			dispatch(shareActions.shareLoadingHide('wall'));
 		})
 		.catch( err => { 
 			dispatch(catchError(err)); 
+			dispatch(shareActions.shareLoadingHide('wall'));
+			dispatch(shareActions.shareMessageAdd('wall', 'Ошибка, попробуйте еще раз'));
 		});
 	}
 }
@@ -198,20 +191,13 @@ export function postToWallAfterLogin() {
 		.then( () => {
 			dispatch(loadingActions.loadingHide());	
 		},(err) => {
-			console.error(err);
+			dispatch(catchError(err)); 
 			dispatch(loadingActions.loadingHide());
 		});
 	}
 }
 
-
-function getUserDataPromises() {	
-	const p0 = API.getUser();
-	const p1 = API.getUserFriends();
-	const p2 = API.getUserRelatives();	
-	return Promise.all([p0,p1,p2]);
-}
-
+//user
 
 export function setUserData(data) {
 	return dispatch => {
@@ -226,6 +212,7 @@ export function setUserData(data) {
 	}
 }
 
+
 //xml
 
 export function setXmlData(xml) {
@@ -233,13 +220,20 @@ export function setXmlData(xml) {
 		dispatch(xmlActions.xmlProductsAdd(xml.products));
  		dispatch(xmlActions.xmlCategoriesAdd(xml.categories));
  		dispatch(xmlActions.xmlActiveCategorySet(xml.categories[0].id));
-
 	}
 }
 
 //init
 
 export function getInitialData() {
+
+	function getUserDataPromises() {	
+		const p0 = API.getUser();
+		const p1 = API.getUserFriends();
+		const p2 = API.getUserRelatives();	
+		return Promise.all([p0,p1,p2]);
+	}
+
 	return dispatch => {
 		dispatch(loadingActions.loadingShow());	
 
@@ -258,6 +252,7 @@ export function getInitialData() {
 		})
 		.catch( err => { 
 			dispatch(catchError(err)); 
+			dispatch(loadingActions.loadingHide());
 		});
 	}
 }
