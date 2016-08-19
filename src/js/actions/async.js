@@ -55,25 +55,6 @@ export function logout() {
 
 //messages
 
-export function sendMessage(data){
-	return dispatch => {
-		dispatch(loadingActions.loadingShow());
-		
-		return API.sendMessage(data)
-		.then( (res) => {
-			console.log(res);
-		})
-		.then( () => {
-
-			dispatch(loadingActions.loadingHide());
-		})
-		.catch( err => { 
-			dispatch(catchError(err)); 
-			dispatch(loadingActions.loadingHide());
-		});
-	}
-}
-
 export function sendInvites(sendToFriends = true, sendToRelatives = true){
 	return (dispatch, getState) => {
 
@@ -97,14 +78,13 @@ export function sendInvites(sendToFriends = true, sendToRelatives = true){
 			promises.push(API.sendInvites(messages));
 		});
 
-		dispatch(shareActions.shareLoadingShow('messages'));
+		dispatch(shareActions.shareMessageClearAll('messages'));
 
 		return Promise.all(promises)
 		.then( (results) => {
 			dispatch(shareActions.shareMessageAdd('messages', 'Сообщения отправлены'));
 		})
 		.then( () => {
-
 			dispatch(shareActions.shareLoadingHide('messages'));
 		})
 		.catch( err => { 

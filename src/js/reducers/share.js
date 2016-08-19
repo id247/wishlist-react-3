@@ -17,6 +17,8 @@ export function message(state = {}, action) {
 	switch (action.type) {
 		case actions.SHARE_MESSAGE_ADD:
 			return 	{...state, ...{[action.payload.shareId]: action.payload.message}};
+		case actions.SHARE_MESSAGE_CLEAR_ALL:
+			return 	{};
 		default:
 			return state;
 	}

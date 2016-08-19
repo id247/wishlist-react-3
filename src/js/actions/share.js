@@ -22,5 +22,12 @@ export function shareMessageAdd(shareId, message) {
 		payload: {shareId, message},
 	}
 }
+export const SHARE_MESSAGE_CLEAR_ALL = 'SHARE_MESSAGE_CLEAR_ALL';
+
+export function shareMessageClearAll() {
+	return {
+		type: SHARE_MESSAGE_CLEAR_ALL,
+	}
+}
 
 

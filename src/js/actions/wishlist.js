@@ -3,6 +3,8 @@ const cookieName = 'ozon_wishlist';
 
 import parse from 'url-parse';
 
+import * as shareActions from '../actions/share';
+
 export const WISHLIST_ADD_ITEM 	= 'WISHLIST_ADD_ITEM';
 export const WISHLIST_ADD_ITEMS 	= 'WISHLIST_ADD_ITEMS';
 export const WISHLIST_DELETE_ITEM 	= 'WISHLIST_DELETE_ITEM';
@@ -87,11 +89,13 @@ export function wishlistAddProduct(product) {
 	return (dispatch, getState) => {
 		dispatch(wishlistAddItem(product));
 		dispatch(wishlistSetCookies());
+		dispatch(shareActions.shareMessageClearAll());
 	}
 }
 export function wishlistDeleteProduct(product) {
 	return (dispatch, getState) => {
 		dispatch(wishlistDeleteItem(product));
 		dispatch(wishlistSetCookies());
+		dispatch(shareActions.shareMessageClearAll());
 	}
 }
