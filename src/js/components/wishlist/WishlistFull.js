@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import parse from 'url-parse';
+
 import * as wishlistActions from '../../actions/wishlist';
 
 import WishlistItem from './WishlistItem';
@@ -9,9 +11,13 @@ import WishlistBuyButton from './WishlistBuyButton';
 import WishlistShare from './WishlistShare';
 
 const WishlistFull = (props) => {
-	const actions = props.roles && props.roles.indexOf('EduStudent') > -1
-					? <WishlistShare mixClass="wishlist__share" />
-					: <WishlistBuyButton ozonLink={props.ozonLink} />
+	
+	const url = parse(location.href, true);
+	const isForParent = url.query.parent;
+
+	const actions = isForParent
+					? <WishlistBuyButton ozonLink={props.ozonLink} />
+					: <WishlistShare mixClass="wishlist__share" />
 	return(
 		<div className="wishlist__full">
 
@@ -43,7 +49,6 @@ WishlistFull.propTypes = {
 const mapStateToProps = (state, ownProps) => ({
 	ozonLink: 'http://www.OZON.ru/?context=cart&id=' + state.wishlist.map( item => item.id).join(',') +  '&partner=dnevnik_ru',
 	wishlist: state.wishlist,
-	roles: state.user.profile.roles,
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
