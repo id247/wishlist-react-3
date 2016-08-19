@@ -26,11 +26,11 @@ class WishlistShare extends React.Component {
 	}
 
 	submitInvites(){		
-		this.props.sendInvitesWithLogin(this.state.friends, this.state.relatives);
+		this.props.sendInvites(this.state.friends, this.state.relatives);
 	}
 
 	postToWall(){
-		this.props.postToWallWithLogin();
+		this.props.postToWall();
 	}
 
 	//event handlers
@@ -125,8 +125,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	sendInvitesWithLogin: (sendToFriends, sendToRelatives) => dispatch(asyncActions.sendInvitesWithLogin(sendToFriends, sendToRelatives)),
-	postToWallWithLogin: (data) => dispatch(asyncActions.postToWallWithLogin(data)),
+	sendInvites: (sendToFriends, sendToRelatives) => dispatch(asyncActions.sendInvites(sendToFriends, sendToRelatives)),
+	postToWall: () => dispatch(asyncActions.postToWall()),
 });
 
 WishlistShare.propTypes = {

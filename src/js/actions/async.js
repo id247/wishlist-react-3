@@ -9,6 +9,8 @@ import * as errorActions from '../actions/error';
 import * as userActions from '../actions/user';
 import * as xmlActions from '../actions/xml';
 
+import * as messagesHelpers from '../helpers/messages';
+
 
 //error handler
 
@@ -85,53 +87,25 @@ export function sendMessage(data){
 export function sendInvites(sendToFriends = true, sendToRelatives = true){
 	return (dispatch, getState) => {
 
-		const promises = [];
-
 		const state = getState();
-		const { profile, friends, relatives } = state.user;
-		const wishlistIds = state.wishlist.map( item => item.id);
-		
-		const relativesIds = relatives.map( relative => relative.person.userId );
-		const friendsIds = friends;
-		
-		const serviceUrl = 'http://localhost:9000';
-		const wishlistUrl = wishlistIds.join(',');
 
-		const relativesText = 'Текст о том что создан список и <a href="' + serviceUrl + '?wishlist=' + wishlistUrl + '&parent=true">ссылка</a>';
-		const friendsText = 'Текст о том что создан список и <a href="' + serviceUrl + '?wishlist=' + wishlistUrl + '">ссылка</a>';
-
-		const messagesArray = [];
-		
-		function createMessages(peopleIds, message){
-			const formData = new URLSearchParams();
-			peopleIds.map( (id, i) => {
-				formData.append('userIDs[' + i + ']', id);
-			});		
-			formData.append('message', message);
-
-			return formData;
+		if (!state.user.profile){ //login first
+			dispatch(sendInvitesAfterLogin(sendToFriends, sendToRelatives));
+			return;
 		}
 
-		if (sendToRelatives === true && relativesIds.length > 0){
-			messagesArray.push(createMessages(relativesIds, relativesText));
-		}
-
-		if (sendToFriends && friendsIds.length > 0){
-			messagesArray.push(createMessages(friendsIds, friendsText));
-		}
-
-		console.log(relativesIds);
-		console.log(friendsIds);
-		console.log(messagesArray);
+		const messagesArray = messagesHelpers.createMessagesArray(state, sendToFriends, sendToRelatives);
 
 		if (messagesArray.length === 0){
+			console.log('no messages');
 			return false;
 		}
+		
+		const promises = [];
 
 		messagesArray.map( messages => {
 			promises.push(API.sendInvites(messages));
 		});
-
 
 		dispatch(loadingActions.loadingShow());
 
@@ -150,24 +124,17 @@ export function sendInvites(sendToFriends = true, sendToRelatives = true){
 }
 
 export function sendInvitesAfterLogin(sendToFriends, sendToRelatives) {
-	return (dispatch, getState) => {
+	return dispatch => {
 		dispatch(loadingActions.loadingShow());
 		
 		return OAuth.login()
 		.then( () => {
-			return getUserInfoPromise();
+			return getUserDataPromises();
 		})
 		.then( data => {
-			dispatch(getUserInfo(data));
+			dispatch(setUserData(data));
 		})
 		.then( () => {
-			const profile = getState().user.profile;
-			
-			//if still not loged in
-			if (!profile){
-				throw new Error('No profile');
-			}
-			
 			dispatch(sendInvites(sendToFriends, sendToRelatives));
 		})
 		.then( () => {
@@ -180,37 +147,23 @@ export function sendInvitesAfterLogin(sendToFriends, sendToRelatives) {
 }
 
 
-export function sendInvitesWithLogin(sendToFriends, sendToRelatives){
-	return (dispatch, getState) => {
-		//if not loged in
-		if (getState().user.profile){
-			dispatch(sendInvites(sendToFriends, sendToRelatives));
-		}else{
-			dispatch(sendInvitesAfterLogin(sendToFriends, sendToRelatives));
-		}
-	}
-}
 //wall
 
 export function postToWall(){
 	return (dispatch, getState) => {
 
 		const state = getState();
-		const { wishlist, user } = state;
 
-		const formData = new URLSearchParams();
+		if (!state.user.profile){ //login first
+			dispatch(postToWallAfterLogin());
+			return;
+		}
 
-		const wishlistUrl = state.wishlist.map( item => item.id).join(',');
-		const serviceUrl = 'http://localhost:9000';
-
-		const text = 'Текст о том что создан список и <a href="' + serviceUrl + '?wishlist=' + wishlistUrl + '">ссылка</a>';
-		
-		formData.append('body', text);
-		formData.append('file', 37017);
+		const formData = messagesHelpers.createMessageToWall(state);
 
 		dispatch(loadingActions.loadingShow());
 		
-		return API.postToWall(user.profile.id_str, formData)
+		return API.postToWall(state.user.profile.id_str, formData)
 		.then( (res) => {
 			console.log(res);
 			if (res === 'ok'){
@@ -228,26 +181,19 @@ export function postToWall(){
 }
 
 
-export function postToWallAfterLogin(formData) {
-	return (dispatch, getState) => {
+export function postToWallAfterLogin() {
+	return dispatch => {
 		dispatch(loadingActions.loadingShow());
 		
 		return OAuth.login()
 		.then( () => {
-			return getUserInfoPromise();
+			return getUserDataPromises();
 		})
 		.then( data => {
-			dispatch(getUserInfo(data));
+			dispatch(setUserData(data));
 		})
 		.then( () => {
-			const profile = getState().user.profile;
-			
-			//if still not loged in
-			if (!profile){
-				throw new Error('No profile');
-			}
-			
-			dispatch(postToWall(profile.id_str, formData));
+			dispatch(postToWall());
 		})
 		.then( () => {
 			dispatch(loadingActions.loadingHide());	
@@ -255,20 +201,6 @@ export function postToWallAfterLogin(formData) {
 			console.error(err);
 			dispatch(loadingActions.loadingHide());
 		});
-	}
-}
-
-
-export function postToWallWithLogin(){
-	return (dispatch, getState) => {
-		
-		//if not loged in
-		if (getState().user.profile){
-			dispatch(postToWall());
-		}else{
-			dispatch(postToWallAfterLogin());
-		}
-
 	}
 }
 

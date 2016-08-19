@@ -27,3 +27,7 @@ export const APIoptions = {
 	server: 'feature01.dnevnik.ru',
 	base: 'https://api.feature01.dnevnik.ru/v1/',
 }
+
+export const PromoOptions = {	
+	url: 'http://localhost:9000',
+}
