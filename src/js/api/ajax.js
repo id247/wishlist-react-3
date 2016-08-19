@@ -39,9 +39,9 @@ function selectResponse(response){
 			break;
 		case 200: 
 			return response.json();
-		case 400: 
-			throw selectRequestError(response.json());
-			break;
+		// case 400: 
+		// 	throw selectRequestError(response.json());
+		// 	break;
 		case 401: 
 			throw requestError('Unauthorized', '');
 			break;

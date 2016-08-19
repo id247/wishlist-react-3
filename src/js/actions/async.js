@@ -205,7 +205,7 @@ export function getInitialData() {
 
 	function getUserDataPromises() {	
 		const p0 = API.getUser();
-		const p1 = API.getUserFriends();
+		const p1 = API.getUserFriendsIds();
 		const p2 = API.getUserRelatives();	
 		return Promise.all([p0,p1,p2]);
 	}
@@ -221,14 +221,15 @@ export function getInitialData() {
  			return getUserDataPromises();
 		})
 		.then( data => {
-			const friends = data[1];
-			const getUserPromises = friends.map( friendId => API.getUser(friendId) );
+			const friendsIds = data[1];
+			const getUserPromises = friendsIds.map( friendId => API.getUser(friendId) );
 			
 			dispatch(setUserData(data));
-
+			
 			return Promise.all(getUserPromises);
+			//return API.getUsers(friendsIds);
 		})
-		.then( (friends) => {			
+		.then( (friends) => {		
 			dispatch(userActions.userFriendsSet(friends));
 		})
 		.then( () => {			

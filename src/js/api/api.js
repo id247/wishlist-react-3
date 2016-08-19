@@ -14,7 +14,25 @@ export default {
 
 		return Ajax(options);
 	},
-	getUserFriends: (userId = 'me') => {
+	getUsers: (userIds) => {
+		if (!userIds){
+			return paramsError('no userIds in API.getUsers');
+		}
+		
+		const formData = new FormData();
+		userIds.map( (userId, i) => {
+			formData.append('users[' + i + ']', userId);
+		});	
+
+		const options = {
+			path: 'users/many',
+			method: 'post',
+			body: formData,
+		};
+
+		return Ajax(options);
+	},
+	getUserFriendsIds: (userId = 'me') => {
 		const options = {
 			path: 'users/' + userId + '/friends',
 		};
