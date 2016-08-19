@@ -59,13 +59,16 @@ class WishlistShare extends React.Component {
 
 	postToWall(){
 		const formData = new URLSearchParams();
-		const userId = this.props.user.profile.id_str;
-		const text = 'Текст о том что создан список и <a href="#">ссылка</a>';
+		const serviceUrl = 'http://localhost:9000';
+		const wishlistUrl = this.props.wishlistIds.join(',');
+		const text = 'Текст о том что создан список и <a href="' + serviceUrl + '?wishlist=' + wishlistUrl + '">ссылка</a>';
 		
 		formData.append('body', text);
 		formData.append('file', 37017);
 
-		this.props.postToWall(userId, formData.toString());
+		console.log(text);
+
+		this.props.postToWallWithLogin(formData.toString());
 	}
 
 
@@ -159,11 +162,12 @@ class WishlistShare extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
 	user: state.user,
+	wishlistIds: state.wishlist.map( item => item.id),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	sendInvites: (data) => dispatch(asyncActions.sendInvites(data)),
-	postToWall: (userId, data) => dispatch(asyncActions.postToWall(userId, data)),
+	postToWallWithLogin: (data) => dispatch(asyncActions.postToWallWithLogin(data)),
 });
 
 WishlistShare.propTypes = {
