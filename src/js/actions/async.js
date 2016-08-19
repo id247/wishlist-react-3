@@ -62,7 +62,173 @@ export function logout() {
 }
 
 
-export function postToWallAfretLogin(formData) {
+//messages
+
+export function sendMessage(data){
+	return dispatch => {
+		dispatch(loadingActions.loadingShow());
+		
+		return API.sendMessage(data)
+		.then( (res) => {
+			console.log(res);
+		})
+		.then( () => {
+
+			dispatch(loadingActions.loadingHide());
+		})
+		.catch( err => { 
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+export function sendInvites(sendToFriends = true, sendToRelatives = true){
+	return (dispatch, getState) => {
+
+		const promises = [];
+
+		const state = getState();
+		const { profile, friends, relatives } = state.user;
+		const wishlistIds = state.wishlist.map( item => item.id);
+		
+		const relativesIds = relatives.map( relative => relative.person.userId );
+		const friendsIds = friends;
+		
+		const serviceUrl = 'http://localhost:9000';
+		const wishlistUrl = wishlistIds.join(',');
+
+		const relativesText = 'Текст о том что создан список и <a href="' + serviceUrl + '?wishlist=' + wishlistUrl + '&parent=true">ссылка</a>';
+		const friendsText = 'Текст о том что создан список и <a href="' + serviceUrl + '?wishlist=' + wishlistUrl + '">ссылка</a>';
+
+		const messagesArray = [];
+		
+		function createMessages(peopleIds, message){
+			const formData = new URLSearchParams();
+			peopleIds.map( (id, i) => {
+				formData.append('userIDs[' + i + ']', id);
+			});		
+			formData.append('message', message);
+
+			return formData;
+		}
+
+		if (sendToRelatives === true && relativesIds.length > 0){
+			messagesArray.push(createMessages(relativesIds, relativesText));
+		}
+
+		if (sendToFriends && friendsIds.length > 0){
+			messagesArray.push(createMessages(friendsIds, friendsText));
+		}
+
+		console.log(relativesIds);
+		console.log(friendsIds);
+		console.log(messagesArray);
+
+		if (messagesArray.length === 0){
+			return false;
+		}
+
+		messagesArray.map( messages => {
+			promises.push(API.sendInvites(messages));
+		});
+
+
+		dispatch(loadingActions.loadingShow());
+
+		return Promise.all(promises)
+		.then( (results) => {
+			console.log(results);
+		})
+		.then( () => {
+
+			dispatch(loadingActions.loadingHide());
+		})
+		.catch( err => { 
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+export function sendInvitesAfterLogin(sendToFriends, sendToRelatives) {
+	return (dispatch, getState) => {
+		dispatch(loadingActions.loadingShow());
+		
+		return OAuth.login()
+		.then( () => {
+			return getUserInfoPromise();
+		})
+		.then( data => {
+			dispatch(getUserInfo(data));
+		})
+		.then( () => {
+			const profile = getState().user.profile;
+			
+			//if still not loged in
+			if (!profile){
+				throw new Error('No profile');
+			}
+			
+			dispatch(sendInvites(sendToFriends, sendToRelatives));
+		})
+		.then( () => {
+			dispatch(loadingActions.loadingHide());	
+		},(err) => {
+			console.error(err);
+			dispatch(loadingActions.loadingHide());
+		});
+	}
+}
+
+
+export function sendInvitesWithLogin(sendToFriends, sendToRelatives){
+	return (dispatch, getState) => {
+		//if not loged in
+		if (getState().user.profile){
+			dispatch(sendInvites(sendToFriends, sendToRelatives));
+		}else{
+			dispatch(sendInvitesAfterLogin(sendToFriends, sendToRelatives));
+		}
+	}
+}
+//wall
+
+export function postToWall(){
+	return (dispatch, getState) => {
+
+		const state = getState();
+		const { wishlist, user } = state;
+
+		const formData = new URLSearchParams();
+
+		const wishlistUrl = state.wishlist.map( item => item.id).join(',');
+		const serviceUrl = 'http://localhost:9000';
+
+		const text = 'Текст о том что создан список и <a href="' + serviceUrl + '?wishlist=' + wishlistUrl + '">ссылка</a>';
+		
+		formData.append('body', text);
+		formData.append('file', 37017);
+
+		dispatch(loadingActions.loadingShow());
+		
+		return API.postToWall(user.profile.id_str, formData)
+		.then( (res) => {
+			console.log(res);
+			if (res === 'ok'){
+				console.log('Сохранили на стеночку');
+			}	
+		})
+		.then( () => {
+
+			dispatch(loadingActions.loadingHide());
+		})
+		.catch( err => { 
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+
+export function postToWallAfterLogin(formData) {
 	return (dispatch, getState) => {
 		dispatch(loadingActions.loadingShow());
 		
@@ -93,85 +259,21 @@ export function postToWallAfretLogin(formData) {
 }
 
 
-//messages
-
-export function sendMessage(data){
-	return dispatch => {
-		dispatch(loadingActions.loadingShow());
-		
-		return API.sendMessage(data)
-		.then( (res) => {
-			console.log(res);
-		})
-		.then( () => {
-
-			dispatch(loadingActions.loadingHide());
-		})
-		.catch( err => { 
-			dispatch(catchError(err)); 
-		});
-	}
-}
-
-export function sendInvites(data){
-	return dispatch => {
-		dispatch(loadingActions.loadingShow());
-		
-		return API.sendInvites(data)
-		.then( (res) => {
-			console.log(res);
-		})
-		.then( () => {
-
-			dispatch(loadingActions.loadingHide());
-		})
-		.catch( err => { 
-			dispatch(catchError(err)); 
-		});
-	}
-}
-
-//wall
-
-export function postToWall(userId, formData){
-	return dispatch => {
-		dispatch(loadingActions.loadingShow());
-		
-		return API.postToWall(userId, formData)
-		.then( (res) => {
-			console.log(res);
-			if (res === 'ok'){
-				console.log('Сохранили на стеночку');
-			}	
-		})
-		.then( () => {
-
-			dispatch(loadingActions.loadingHide());
-		})
-		.catch( err => { 
-			dispatch(catchError(err)); 
-		});
-	}
-}
-
-
-export function postToWallWithLogin(formData){
+export function postToWallWithLogin(){
 	return (dispatch, getState) => {
-
-		const profile = getState().user.profile;
-
+		
 		//if not loged in
-		if (profile){
-			dispatch(postToWall(profile.id_str, formData));
+		if (getState().user.profile){
+			dispatch(postToWall());
 		}else{
-			dispatch(postToWallAfretLogin(formData));
+			dispatch(postToWallAfterLogin());
 		}
 
 	}
 }
 
 
-function getUserInfoPromise() {	
+function getUserDataPromises() {	
 	const p0 = API.getUser();
 	const p1 = API.getUserFriends();
 	const p2 = API.getUserRelatives();	
@@ -179,7 +281,7 @@ function getUserInfoPromise() {
 }
 
 
-export function getUserInfo(data) {
+export function setUserData(data) {
 	return dispatch => {
 		console.log(data);
 		const user = data[0];
@@ -194,23 +296,30 @@ export function getUserInfo(data) {
 
 //xml
 
+export function setXmlData(xml) {
+	return dispatch => {
+		dispatch(xmlActions.xmlProductsAdd(xml.products));
+ 		dispatch(xmlActions.xmlCategoriesAdd(xml.categories));
+ 		dispatch(xmlActions.xmlActiveCategorySet(xml.categories[0].id));
 
-export function getXml() {
+	}
+}
+
+//init
+
+export function getInitialData() {
 	return dispatch => {
 		dispatch(loadingActions.loadingShow());	
 
 		return XML.getXML()
 		.then( xml => {
-			dispatch(xmlActions.xmlProductsAdd(xml.products));
- 			dispatch(xmlActions.xmlCategoriesAdd(xml.categories));
- 			dispatch(xmlActions.xmlActiveCategorySet(xml.categories[0].id));
-
+			dispatch(setXmlData(xml));
  			dispatch(initActions.apiInitialDataLoaded());
 
- 			return getUserInfoPromise();
+ 			return getUserDataPromises();
 		})
 		.then( data => {
-			dispatch(getUserInfo(data));
+			dispatch(setUserData(data));
 		})
 		.then( () => {			
 			dispatch(loadingActions.loadingHide());
@@ -221,11 +330,9 @@ export function getXml() {
 	}
 }
 
-//init
-
 export function init() {
 	return dispatch => {
-		return dispatch(getXml());	
+		return dispatch(getInitialData());	
 	}
 }
 

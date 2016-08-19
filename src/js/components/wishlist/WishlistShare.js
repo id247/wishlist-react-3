@@ -25,53 +25,13 @@ class WishlistShare extends React.Component {
 		});
 	}
 
-	submitInvites(){
-		const formData = new URLSearchParams();
-		const { profile, friends, relatives } = this.props.user;
-		const { state } = this;
-		
-		let relativesIds = [];
-		let friendsIds = [];
-		let allIds = [];
-
-
-		if (state.relatives){
-			relativesIds = relatives.map( relative => relative.person.userId );
-		}
-
-		if (state.friends){
-			friendsIds = friends;		
-		}
-
-		allIds = [...relativesIds, ...friendsIds];
-
-		if (allIds.length === 0){
-			return;
-		}
-
-		allIds.map( (id, i) => {
-			formData.append('userIDs[' + i + ']', id);
-		});		
-		formData.append('message', 'test');
-
-		this.props.sendInvites(formData.toString());
+	submitInvites(){		
+		this.props.sendInvitesWithLogin(this.state.friends, this.state.relatives);
 	}
 
 	postToWall(){
-		const formData = new URLSearchParams();
-		const serviceUrl = 'http://localhost:9000';
-		const wishlistUrl = this.props.wishlistIds.join(',');
-		const text = 'Текст о том что создан список и <a href="' + serviceUrl + '?wishlist=' + wishlistUrl + '">ссылка</a>';
-		
-		formData.append('body', text);
-		formData.append('file', 37017);
-
-		console.log(text);
-
-		this.props.postToWallWithLogin(formData.toString());
+		this.props.postToWallWithLogin();
 	}
-
-
 
 	//event handlers
 
@@ -162,11 +122,10 @@ class WishlistShare extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
 	user: state.user,
-	wishlistIds: state.wishlist.map( item => item.id),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	sendInvites: (data) => dispatch(asyncActions.sendInvites(data)),
+	sendInvitesWithLogin: (sendToFriends, sendToRelatives) => dispatch(asyncActions.sendInvitesWithLogin(sendToFriends, sendToRelatives)),
 	postToWallWithLogin: (data) => dispatch(asyncActions.postToWallWithLogin(data)),
 });
 
