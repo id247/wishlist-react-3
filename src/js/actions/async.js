@@ -123,9 +123,8 @@ export function postToWall(userId, data){
 }
 
 
-//init
 
-export function init() {
+export function getUserInfo() {
 	return dispatch => {
 		dispatch(loadingActions.loadingShow());	
 		
@@ -133,14 +132,7 @@ export function init() {
 		const p1 = API.getUserFriends();
 		const p2 = API.getUserRelatives();
 
-		return XML.getXML()
-		.then( xml => {
-			dispatch(xmlActions.xmlProductsAdd(xml.products));
- 			dispatch(xmlActions.xmlCategoriesAdd(xml.categories));
- 			dispatch(xmlActions.xmlActiveCategorySet(xml.categories[0].id));
-
-			return Promise.all([p0,p1,p2]);
-		})
+		return Promise.all([p0,p1,p2])
 		.then( values => {
 			console.log(values);
 			const user = values[0];
@@ -158,6 +150,38 @@ export function init() {
 		.catch( err => { 
 			dispatch(catchError(err)); 
 		});
+	}
+}
+
+
+//xml
+
+
+export function getXml() {
+	return dispatch => {
+		dispatch(loadingActions.loadingShow());	
+
+		return XML.getXML()
+		.then( xml => {
+			dispatch(xmlActions.xmlProductsAdd(xml.products));
+ 			dispatch(xmlActions.xmlCategoriesAdd(xml.categories));
+ 			dispatch(xmlActions.xmlActiveCategorySet(xml.categories[0].id));
+		})
+		.then( () => {
+			dispatch(initActions.apiInitialDataLoaded());
+			dispatch(loadingActions.loadingHide());
+		})
+		.catch( err => { 
+			dispatch(catchError(err)); 
+		});
+	}
+}
+
+//init
+
+export function init() {
+	return dispatch => {
+		return dispatch(getXml());	
 	}
 }
 

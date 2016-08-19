@@ -1,6 +1,7 @@
 import cookies from 'js-cookie';
 const cookieName = 'ozon_wishlist';
 
+import parse from 'url-parse';
 
 export const WISHLIST_ADD_ITEM 	= 'WISHLIST_ADD_ITEM';
 export const WISHLIST_ADD_ITEMS 	= 'WISHLIST_ADD_ITEMS';
@@ -27,20 +28,31 @@ export function wishlistDeleteItem(productId) {
 	}
 }
 
-export function wishlistGetFromCookies() {
+export function wishlistGet() {
 
 	function getCookies(){
 		return cookies.get(cookieName);
 	}
 
-	function filterWishlist(products){
+	function getWishlist(){
+
+		const url = parse(location.href, true);
+		const urlWishlist = url.query.wishlist;
 		const cookiesWishlist = getCookies();
 
-		if (!cookiesWishlist){
-			return [];
+		if (urlWishlist){
+			return urlWishlist.split(',');
 		}
-		
-		const tempWishlist = cookiesWishlist.split(',').map(id => parseInt(id));
+
+		if (cookiesWishlist){
+			return cookiesWishlist.split(',');
+		}
+
+		return [];
+	}
+
+	function filterWishlist(wishlist, products){
+		const tempWishlist = wishlist.map(id => parseInt(id));
 
 		//only ids wich are in store
 		return products.filter( product => (tempWishlist.indexOf(parseInt(product.id)) > -1) );
@@ -48,7 +60,8 @@ export function wishlistGetFromCookies() {
 
 	return (dispatch, getState) => {
 		let products = getState().xml.products;
-		products = filterWishlist(products);
+		let wishlist = getWishlist();
+		products = filterWishlist(wishlist, products);
 		dispatch(wishlistAddItems(products));
 	}
 }

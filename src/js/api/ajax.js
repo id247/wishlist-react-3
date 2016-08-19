@@ -32,6 +32,7 @@ function generateUrl(base, path, token){
 }
 
 function selectResponse(response){
+	console.log(response);
 	switch(response.status){
 		case 204: 
 			return 'ok';
@@ -39,8 +40,10 @@ function selectResponse(response){
 		case 200: 
 			return response.json();
 		case 400: 
-		case 401: 
 			throw selectRequestError(response.json());
+			break;
+		case 401: 
+			throw requestError('Unauthorized', '');
 			break;
 		default:
 			throw requestError(response.status, response.statusText);
@@ -48,6 +51,8 @@ function selectResponse(response){
 }
 
 function selectRequestError(res){
+
+	console.log(res.type);
 
 	switch(res.type){
 		case 'tokenRequired':

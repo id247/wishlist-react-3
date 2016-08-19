@@ -17,7 +17,7 @@ class Wishlist extends React.Component {
 	}
 
 	componentWillMount() {
-		this.props.wishlistGetFromCookies();
+		this.props.wishlistGet();
 	}
 
 	componentDidMount() {
@@ -118,7 +118,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-	wishlistGetFromCookies: () => dispatch(wishlistActions.wishlistGetFromCookies()),
+	wishlistGet: () => dispatch(wishlistActions.wishlistGet()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wishlist);
