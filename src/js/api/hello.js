@@ -38,18 +38,13 @@ hello.init({
 
 const dnevnik = hello('dnevnik');
 
-export function getToken(){
+function getToken(){
 	const response = dnevnik && dnevnik.getAuthResponse();
 	return response ? response.access_token : false;
 }
 
-export const OAuth = {
-	login: () => {
-		return dnevnik.login();
-	},
-	logout: () => {
-		return dnevnik.logout();
-	},
-} 
-
-export default dnevnik;
+export default {
+	login: () => dnevnik.login(),
+	logout: () => dnevnik.logout(),
+	getToken: getToken,
+};

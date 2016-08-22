@@ -1,12 +1,12 @@
 //because hello.api() is piece of shit
 
-import { getToken } from './hello.js';
+import OAuth from './hello.js';
 
 import { APIoptions } from 'appSettings';
 
 function sendRequest(options){
 
-	const accessToken = getToken();
+	const accessToken = OAuth.getToken();
 
 	if (!accessToken){
 		return Promise.reject(requestError('Unauthorized', 'no token'));	
