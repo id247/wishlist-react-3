@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as asyncActions from '../../actions/async';
 
 import URLSearchParams from 'url-search-params';
+import { PromoOptions } from 'appSettings';
 
 import Button from '../../components/common/Button';
 import Checkbox from '../../components/common/Checkbox';
@@ -107,6 +108,7 @@ class WishlistShare extends React.Component {
 					share='messages'
 					status={props.share.message.messages}
 					userId={props.user.profile.id_str}
+					server={PromoOptions.server}
 				/>
 
 				<div className="wishlist-share__button-placeholder">
@@ -121,14 +123,15 @@ class WishlistShare extends React.Component {
 						Сохранить на стену
 					</Button>
 
-					<ShareResult 
-						mixClass="wishlist-share__message"
-						share='wall'
-						status={props.share.message.wall}
-						userId={props.user.profile.id_str}
-					/>
-
 				</div>
+
+				<ShareResult 
+					mixClass="wishlist-share__message"
+					share='wall'
+					status={props.share.message.wall}
+					userId={props.user.profile.id_str}
+					server={PromoOptions.server}
+				/>
 
 			</div>		
 		);
@@ -149,13 +152,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 WishlistShare.propTypes = {
 	mixClass: React.PropTypes.string,
-//	Array: React.PropTypes.array.isRequired,
-//	Bool: React.PropTypes.bool.isRequired,
-//	Func: React.PropTypes.func.isRequired,
-//	Number: React.PropTypes.number.isRequired,
-//	Object: React.PropTypes.object.isRequired,
-//	String: React.PropTypes.string.isRequired,
-//	Symbol: React.PropTypes.symbol.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(WishlistShare);

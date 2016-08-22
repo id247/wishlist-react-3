@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { PromoOptions } from 'appSettings';
 
 const ShareResult = (props) => {
 
@@ -12,7 +11,7 @@ const ShareResult = (props) => {
 					{' '}
 					<a 
 						className="link" 
-						href={(PromoOptions.server + '/user/user.aspx?user=' + props.userId)}
+						href={(props.server + '/user/user.aspx?user=' + props.userId)}
 					>
 						стену
 					</a>
@@ -53,13 +52,7 @@ ShareResult.propTypes = {
 	userId: React.PropTypes.string,
 
 	share: React.PropTypes.string.isRequired,
-//	Array: React.PropTypes.array.isRequired,
-//	Bool: React.PropTypes.bool.isRequired,
-//	Func: React.PropTypes.func.isRequired,
-//	Number: React.PropTypes.number.isRequired,
-//	Object: React.PropTypes.object.isRequired,
-//	String: React.PropTypes.string.isRequired,
-//	Symbol: React.PropTypes.symbol.isRequired,
+	server: React.PropTypes.string.isRequired,
 };
 
 export default ShareResult;
