@@ -201,14 +201,12 @@ export function getInitialData() {
 		})
 		.then( data => {
 			const friendsIds = data[1];
-			const getUserPromises = friendsIds.map( friendId => API.getUser(friendId) );
-			
+		
 			dispatch(setUserData(data));
 
-			return Promise.all(getUserPromises);
-			//return API.getUsers(friendsIds);
+			return API.getUsers(friendsIds);
 		})
-		.then( (friends) => {		
+		.then( (friends) => {	
 			dispatch(userActions.userFriendsSet(friends));
 		})
 		.then( () => {			

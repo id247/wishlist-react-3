@@ -18,7 +18,7 @@ export default {
 		if (!data){
 			return paramsError('no data in API.getUsers');
 		}
-		
+
 		const options = {
 			path: 'users/many',
 			method: 'post',
