@@ -12,9 +12,6 @@ module.exports = {
 			'webpack/hot/only-dev-server',
 			'./src/js/index'
 		],
-		modal: [
-			'./src/js/modal'
-		],
 	},
 	output: {
 		path: path.join(__dirname, 'dev'),
