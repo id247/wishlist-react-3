@@ -42,4 +42,13 @@ export function getToken(){
 	return dnevnik.getAuthResponse() ? dnevnik.getAuthResponse().access_token : false;
 }
 
+export const OAuth = {
+	login: () => {
+		return dnevnik.login();
+	},
+	logout: () => {
+		return dnevnik.logout();
+	},
+} 
+
 export default dnevnik;

@@ -1,5 +1,5 @@
 import API from '../api/api';
-import OAuth from '../api/oauth';
+import { OAuth } from '../api/hello';
 import XML from '../api/xml';
 
 import * as initActions from '../actions/init';
