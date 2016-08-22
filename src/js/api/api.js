@@ -14,20 +14,15 @@ export default {
 
 		return Ajax(options);
 	},
-	getUsers: (userIds) => {
-		if (!userIds){
-			return paramsError('no userIds in API.getUsers');
+	getUsers: (data) => {
+		if (!data){
+			return paramsError('no data in API.getUsers');
 		}
 		
-		const formData = new FormData();
-		userIds.map( (userId, i) => {
-			formData.append('users[' + i + ']', userId);
-		});	
-
 		const options = {
 			path: 'users/many',
 			method: 'post',
-			body: formData,
+			body: data,
 		};
 
 		return Ajax(options);

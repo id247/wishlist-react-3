@@ -1,15 +1,14 @@
 //because hello.api() is piece of shit
 
-import OAuthProvider from './hello.js';
+import { getToken } from './hello.js';
 
 import { APIoptions } from 'appSettings';
 
 function sendRequest(options){
 
-	const OAuthProviderResonse = OAuthProvider && OAuthProvider.getAuthResponse();
-	const accessToken = OAuthProviderResonse && OAuthProviderResonse.access_token;
+	const accessToken = getToken();
 
-	if (!OAuthProviderResonse || !accessToken){
+	if (!accessToken){
 		return Promise.reject(requestError('Unauthorized', 'no token'));	
 	}
 
@@ -25,9 +24,8 @@ function sendRequest(options){
 } 
 
 function generateUrl(base, path, token){
-	const accessToken = OAuthProvider.getAuthResponse().access_token;
 	const join = path.indexOf('?') > -1 ? '&' : '?';
-	const url = base + path + join + 'access_token=' + accessToken;
+	const url = base + path + join + 'access_token=' + token;
 	return url;
 }
 

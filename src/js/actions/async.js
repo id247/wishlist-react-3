@@ -85,11 +85,9 @@ export function sendInvites(sendToFriends = true, sendToRelatives = true){
 		const state = getState();
 
 		if (!state.user.profile){ //login first
-			
 			dispatch(doActionAfterLogin( ()=> {
 				dispatch(sendInvites(sendToFriends, sendToRelatives));
 			}));
-			//dispatch(sendInvitesAfterLogin(sendToFriends, sendToRelatives));
 			return;
 		}
 

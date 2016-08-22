@@ -36,4 +36,10 @@ hello.init({
 	redirect_uri : OAuthOptions.modalRedirectUrl,
 });
 
-export default hello('dnevnik');
+const dnevnik = hello('dnevnik');
+
+export function getToken(){
+	return dnevnik.getAuthResponse() ? dnevnik.getAuthResponse().access_token : false;
+}
+
+export default dnevnik;
