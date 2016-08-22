@@ -39,7 +39,8 @@ hello.init({
 const dnevnik = hello('dnevnik');
 
 export function getToken(){
-	return dnevnik.getAuthResponse() ? dnevnik.getAuthResponse().access_token : false;
+	const response = dnevnik && dnevnik.getAuthResponse();
+	return response ? response.access_token : false;
 }
 
 export const OAuth = {
