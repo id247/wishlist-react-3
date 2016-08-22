@@ -22,6 +22,12 @@ export function catchError(err){
 		}else{
 			console.error(err);
 		}
+
+		switch(err.message){
+			case 'Unauthorized':
+				dispatch(logout());
+				break;
+		}
 	}
 }
 
@@ -33,7 +39,6 @@ export function login() {
 		
 		return OAuth.login()
 		.then( () => {
-			//dispatch(pageActions.setPageWithoutHistory('index'));
 			dispatch(loadingActions.loadingHide());	
 		},(err) => {
 			dispatch(catchError(err));
@@ -47,8 +52,27 @@ export function logout() {
 	return dispatch => {
 		OAuth.logout();
 		dispatch(userActions.userUnset());
-		dispatch(initActions.apiInitialDataDelete());
-		dispatch(pageActions.setPageWithoutHistory('login'));
+	}
+}
+
+export function doActionAfterLogin(callback) {
+	return dispatch => {
+		dispatch(loadingActions.loadingShow());
+		
+		return OAuth.login()
+		.then( getUserDataPromises )
+		.then( data => {
+			dispatch(setUserData(data));
+		})
+		.then( () => {
+			callback();
+		})
+		.then( () => {
+			dispatch(loadingActions.loadingHide());	
+		},(err) => {
+			dispatch(catchError(err)); 	
+			dispatch(loadingActions.loadingHide());
+		});
 	}
 }
 
@@ -61,7 +85,11 @@ export function sendInvites(sendToFriends = true, sendToRelatives = true){
 		const state = getState();
 
 		if (!state.user.profile){ //login first
-			dispatch(sendInvitesAfterLogin(sendToFriends, sendToRelatives));
+			
+			dispatch(doActionAfterLogin( ()=> {
+				dispatch(sendInvites(sendToFriends, sendToRelatives));
+			}));
+			//dispatch(sendInvitesAfterLogin(sendToFriends, sendToRelatives));
 			return;
 		}
 
@@ -91,30 +119,6 @@ export function sendInvites(sendToFriends = true, sendToRelatives = true){
 	}
 }
 
-export function sendInvitesAfterLogin(sendToFriends, sendToRelatives) {
-	return dispatch => {
-		dispatch(loadingActions.loadingShow());
-		
-		return OAuth.login()
-		.then( () => {
-			return getUserDataPromises();
-		})
-		.then( data => {
-			dispatch(setUserData(data));
-		})
-		.then( () => {
-			dispatch(sendInvites(sendToFriends, sendToRelatives));
-		})
-		.then( () => {
-			dispatch(loadingActions.loadingHide());	
-		},(err) => {
-			dispatch(catchError(err)); 	
-			dispatch(loadingActions.loadingHide());
-		});
-	}
-}
-
-
 //wall
 
 export function postToWall(){
@@ -123,7 +127,9 @@ export function postToWall(){
 		const state = getState();
 
 		if (!state.user.profile){ //login first
-			dispatch(postToWallAfterLogin());
+			dispatch(doActionAfterLogin( ()=> {
+				dispatch(postToWall());
+			}));
 			return;
 		}
 
@@ -149,31 +155,14 @@ export function postToWall(){
 	}
 }
 
-
-export function postToWallAfterLogin() {
-	return dispatch => {
-		dispatch(loadingActions.loadingShow());
-		
-		return OAuth.login()
-		.then( () => {
-			return getUserDataPromises();
-		})
-		.then( data => {
-			dispatch(setUserData(data));
-		})
-		.then( () => {
-			dispatch(postToWall());
-		})
-		.then( () => {
-			dispatch(loadingActions.loadingHide());	
-		},(err) => {
-			dispatch(catchError(err)); 
-			dispatch(loadingActions.loadingHide());
-		});
-	}
-}
-
 //user
+
+function getUserDataPromises() {	
+	const p0 = API.getUser();
+	const p1 = API.getUserFriendsIds();
+	const p2 = API.getUserRelatives();	
+	return Promise.all([p0,p1,p2]);
+}
 
 export function setUserData(data) {
 	return dispatch => {
@@ -203,13 +192,6 @@ export function setXmlData(xml) {
 
 export function getInitialData() {
 
-	function getUserDataPromises() {	
-		const p0 = API.getUser();
-		const p1 = API.getUserFriendsIds();
-		const p2 = API.getUserRelatives();	
-		return Promise.all([p0,p1,p2]);
-	}
-
 	return dispatch => {
 		dispatch(loadingActions.loadingShow());	
 
@@ -225,7 +207,7 @@ export function getInitialData() {
 			const getUserPromises = friendsIds.map( friendId => API.getUser(friendId) );
 			
 			dispatch(setUserData(data));
-			
+
 			return Promise.all(getUserPromises);
 			//return API.getUsers(friendsIds);
 		})
