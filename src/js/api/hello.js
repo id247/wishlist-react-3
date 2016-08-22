@@ -18,8 +18,6 @@ hello.init({
 			'basic': OAuthOptions.scope,
 		},
 
-		response_type: 'token',
-
 		scope_delim: ' ',
 
 		login: function(p) {

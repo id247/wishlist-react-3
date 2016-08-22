@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 
 import * as asyncActions from '../../actions/async';
 
-import URLSearchParams from 'url-search-params';
 import { PromoOptions } from 'appSettings';
 
 import Button from '../../components/common/Button';

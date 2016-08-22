@@ -8,7 +8,11 @@ var appSettings = path.join(__dirname, 'src/js/settings/dnevnik.js');
 module.exports = {
 	cache: true,
 	entry: {
-		dnevnik: ['whatwg-fetch', 'babel-polyfill', './src/js/index'],
+		dnevnik: [
+			'whatwg-fetch', 
+			'babel-polyfill', 
+			'./src/js/index'
+		],
 	},
 	output: {
 		path: path.join(__dirname, '/production/assets/js'),

@@ -22,7 +22,7 @@ export default {
 		const options = {
 			path: 'users/many',
 			method: 'post',
-			body: data,
+			body: JSON.stringify(data),
 		};
 
 		return Ajax(options);
@@ -48,7 +48,7 @@ export default {
 		const options = {
 			path: 'messages',
 			method: 'post',
-			body: data,
+			body: JSON.stringify(data),
 		};
 
 		return Ajax(options);
@@ -60,7 +60,7 @@ export default {
 		const options = {
 			path: 'invites',
 			method: 'post',
-			body: data,
+			body: JSON.stringify(data),
 		};
 
 		return Ajax(options);
@@ -76,7 +76,7 @@ export default {
 		const options = {
 			path: 'users/' + userId + '/wall-items',
 			method: 'put',
-			body: data,
+			body: JSON.stringify(data),
 		};
 
 		return Ajax(options);

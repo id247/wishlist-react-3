@@ -8,7 +8,11 @@ var appSettings = path.join(__dirname, 'src/js/settings/mosreg.js');
 module.exports = {
 	cache: true,
 	entry: {
-		mosreg: ['whatwg-fetch', 'babel-polyfill', './src/js/index'],
+		mosreg: [
+			'whatwg-fetch', 
+			'babel-polyfill', 
+			'./src/js/index'
+		],
 	},
 	output: {
 		path: path.join(__dirname, '/production/assets/js'),

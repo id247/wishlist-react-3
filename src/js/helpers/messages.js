@@ -12,13 +12,10 @@ function generateLink(wishlist = [], forParents = false){
 }
 
 function createMessages(peopleIds, message){
-	const formData = new URLSearchParams();
-	peopleIds.map( (id, i) => {
-		formData.append('userIDs[' + i + ']', id);
-	});		
-	formData.append('message', message);
-
-	return formData;
+	return {
+		userIDs: peopleIds,
+		message: message,
+	};
 }
 
 export function createMessagesArray(state, sendToFriends, sendToRelatives){
@@ -46,12 +43,9 @@ export function createMessagesArray(state, sendToFriends, sendToRelatives){
 
 
 export function createMessageToWall(state){
-	
-	const formData = new URLSearchParams();
-	
 	const text = 'Текст о том что создан список и <a href="' + generateLink(state.wishlist) + '">ссылка</a>';
-		
-	formData.append('body', text);
-	
-	return formData;
+
+	return {
+		body: text,
+	};
 }

@@ -16,7 +16,7 @@ function sendRequest(options){
 		
 	options.headers = {
 		'Accept': '*/*',
-		'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+		'Content-Type': 'application/json'
 	};
 
 	return fetch(url, options)
