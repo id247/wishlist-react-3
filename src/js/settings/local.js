@@ -14,7 +14,6 @@
 // }
 
 export const OAuthOptions = {
-	server: 'feature01.dnevnik.ru',
 	authUrl: 'https://login.feature01.dnevnik.ru/oauth2',
 	grantUrl: 'https://api.feature01.dnevnik.ru/v1/authorizations',
 	scope: 'Avatar,FullName,Birthday,Age,Roles,Schools,Organizations,EduGroups,Lessons,Marks,EduWorks,Relatives,Files,Contacts,Friends,Groups,Networks,Events,Wall,Messages,EmailAddress,Sex,SocialEntityMembership',	
@@ -24,10 +23,10 @@ export const OAuthOptions = {
 }
 
 export const APIoptions = {	
-	server: 'feature01.dnevnik.ru',
 	base: 'https://api.feature01.dnevnik.ru/v1/',
 }
 
 export const PromoOptions = {	
 	url: 'http://localhost:9000',
+	server: 'https://feature01.dnevnik.ru',
 }

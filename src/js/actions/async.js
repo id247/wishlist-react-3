@@ -12,7 +12,6 @@ import * as shareActions from '../actions/share';
 
 import * as messagesHelpers from '../helpers/messages';
 
-
 //error handler
 
 export function catchError(err){
@@ -104,7 +103,7 @@ export function sendInvites(sendToFriends = true, sendToRelatives = true){
 
 		return Promise.all(sendInvitesPromises)
 		.then( (results) => {
-			dispatch(shareActions.shareMessageAdd('messages', 'Сообщения отправлены'));
+			dispatch(shareActions.shareMessageAdd('messages', 'ok'));
 		})
 		.then( () => {
 			dispatch(shareActions.shareLoadingHide('messages'));
@@ -112,7 +111,7 @@ export function sendInvites(sendToFriends = true, sendToRelatives = true){
 		.catch( err => { 
 			dispatch(catchError(err)); 
 			dispatch(shareActions.shareLoadingHide('messages'));
-			dispatch(shareActions.shareMessageAdd('messages', 'Ошибка, попробуйте еще раз'));
+			dispatch(shareActions.shareMessageAdd('messages', 'error'));
 		});
 	}
 }
@@ -140,7 +139,7 @@ export function postToWall(){
 			if (res !== 'ok'){
 				throw new Error('post to wall fail - no ok');
 			}	
-			dispatch(shareActions.shareMessageAdd('wall', 'Сохранили на стеночку'));
+			dispatch(shareActions.shareMessageAdd('wall', 'ok'));
 		})
 		.then( () => {
 			dispatch(shareActions.shareLoadingHide('wall'));
@@ -148,7 +147,7 @@ export function postToWall(){
 		.catch( err => { 
 			dispatch(catchError(err)); 
 			dispatch(shareActions.shareLoadingHide('wall'));
-			dispatch(shareActions.shareMessageAdd('wall', 'Ошибка, попробуйте еще раз'));
+			dispatch(shareActions.shareMessageAdd('wall', 'error'));
 		});
 	}
 }

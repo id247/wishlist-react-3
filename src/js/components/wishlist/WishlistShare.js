@@ -8,6 +8,8 @@ import URLSearchParams from 'url-search-params';
 import Button from '../../components/common/Button';
 import Checkbox from '../../components/common/Checkbox';
 
+import ShareResult from '../../components/wishlist/share/ShareResult';
+
 class WishlistShare extends React.Component {
 
 	constructor(){
@@ -100,9 +102,12 @@ class WishlistShare extends React.Component {
 
 				</ul>
 
-				<div className="wishlist-share__message">
-					{props.share.message.messages}
-				</div>
+				<ShareResult 
+					mixClass="wishlist-share__message"
+					share='messages'
+					status={props.share.message.messages}
+					userId={props.user.profile.id_str}
+				/>
 
 				<div className="wishlist-share__button-placeholder">
 
@@ -116,9 +121,12 @@ class WishlistShare extends React.Component {
 						Сохранить на стену
 					</Button>
 
-					<div className="wishlist-share__message">
-						{props.share.message.wall}
-					</div>
+					<ShareResult 
+						mixClass="wishlist-share__message"
+						share='wall'
+						status={props.share.message.wall}
+						userId={props.user.profile.id_str}
+					/>
 
 				</div>
 
