@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider, connect } from 'react-redux';
 
 import Loading from '../components/loading/Loading';
-import Router from '../components/Router';
+import Index from '../components/pages/Index';
 
 class Root extends React.Component {
 
@@ -10,7 +10,7 @@ class Root extends React.Component {
 		return (
 			<Provider store={this.props.store}>
 				<div className="page">
-					<Router index="index" />
+					<Index mixClass="page__catalog-container" />
 					<Loading 
 						mixClass="page__loader"
 						visibleClass="loader--visible"
