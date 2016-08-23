@@ -2,7 +2,7 @@
   "name": "wishlist-react-3",
   "version": "1.0.0",
   "description": "",
-  "cdn": "https://ad.csdnevnik.ru/special/staging/wishlist-3/",
+  "cdn": "https://ad.csdnevnik.ru/special/staging/wishlist3/",
   "main": "gulpfile.js",
   "dependencies": {},
   "devDependencies": {
@@ -59,6 +59,7 @@
   "scripts": {
     "lint": "eslint src/js/**",
     "prod": "NODE_ENV=prod gulp clean; NODE_ENV=mosreg webpack; NODE_ENV=dnevnik webpack; NODE_ENV=prod gulp prod-no-js;",
+    "stage": "NODE_ENV=prod gulp clean; NODE_ENV=staging webpack; NODE_ENV=prod gulp prod-no-js;",
     "prod-html": "NODE_ENV=prod gulp prod-html",
     "prod-css": "NODE_ENV=prod gulp prod-css",
     "prod-js": "NODE_ENV=mosreg webpack; NODE_ENV=dnevnik webpack;",
