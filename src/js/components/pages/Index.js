@@ -10,22 +10,18 @@ class Index extends React.Component {
 
 	componentWillMount(){
 		const { props } = this;
-		if (!props.isInitialDataLoaded){
-			props.init();
-		}
+		props.init();
 	}
 
 	render(){
 		const { props } = this;
-		const content = props.isInitialDataLoaded
-			? <Main mixClass="catalog-container__catalog"  />
-			: null;
 		return(
 			<div className={( (props.mixClass ? props.mixClass : '') + ' catalog-container')}>
 				
 				<Header mixClass="catalog-container__header" />
 
-				{content}
+				<Main mixClass="catalog-container__catalog"  />
+
 			</div>
 		);
 	}
@@ -33,7 +29,6 @@ class Index extends React.Component {
 
 
 const mapStateToProps = (state, ownProps) => ({
-	isInitialDataLoaded: (state.xml.products.length > 0),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
