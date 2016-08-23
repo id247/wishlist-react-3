@@ -33,7 +33,6 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
 	init: () => dispatch(asyncActions.init()), 
-	logout: () => dispatch(asyncActions.logout()), 
 });
 
 Index.propTypes = {
