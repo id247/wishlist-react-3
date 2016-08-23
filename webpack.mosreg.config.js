@@ -3,7 +3,7 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var appSettings = path.join(__dirname, 'src/js/settings/mosreg.js');
+var appSettings = path.join(__dirname, 'src/js/settings/settings-mosreg.js');
 
 module.exports = {
 	cache: true,

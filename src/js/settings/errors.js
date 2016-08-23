@@ -1,4 +1,4 @@
-export const errors = {
+export default {
 	'unknown': {
 		title: 'Неизвестная ошибка',
 		text: 'Произошло что-то удивительное',

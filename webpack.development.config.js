@@ -1,7 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var appSettings = path.join(__dirname, 'src/js/settings/local.js');
+var appSettings = path.join(__dirname, 'src/js/settings/settings-local.js');
 
 module.exports = {
 	devtool: '#inline-source-map',

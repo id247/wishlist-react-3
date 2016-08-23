@@ -30,7 +30,7 @@ hello.init({
 hello.init({
 	dnevnik : OAuthOptions.clientId,
 },{
-	redirect_uri : OAuthOptions.modalRedirectUrl,
+	redirect_uri : OAuthOptions.redirectUrl,
 });
 
 const dnevnik = hello('dnevnik');

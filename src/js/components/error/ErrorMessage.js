@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { errors } from '../../settings/settings';
+import errors from '../../settings/errors';
 
 const ErrorMessage = (props) => {
 	

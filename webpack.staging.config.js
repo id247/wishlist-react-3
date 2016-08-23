@@ -3,7 +3,7 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var appSettings = path.join(__dirname, 'src/js/settings/staging.js');
+var appSettings = path.join(__dirname, 'src/js/settings/settings-staging.js');
 
 module.exports = {
 	devtool: '#inline-source-map',
