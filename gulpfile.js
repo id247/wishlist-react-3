@@ -94,9 +94,7 @@ gulp.task('html', function(callback){
 		var newDestFolder = destFolder + (folder !== 'local' ? '/' + folder : '');
 
 		return gulp.src([
-			'src/html/index/**/*.html', 
 			'src/html/*.html', 
-			'!src/html/index/**/_*.html',
 			'!src/html/_*.html', 
 			])
 			.pipe($.fileInclude({
