@@ -1,7 +1,5 @@
 import { combineReducers } from 'redux';
 
-import { init } from './init';
-import { page } from './page';
 import { error } from './error';
 import { user } from './user';
 import { loading } from './loading';
@@ -10,8 +8,6 @@ import { wishlist } from './wishlist';
 import { share } from './share';
 
 const rootReducer = combineReducers({
-	init,
-	page,
 	error,
 	loading,
 	user,

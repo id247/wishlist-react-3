@@ -33,7 +33,7 @@ class Index extends React.Component {
 
 
 const mapStateToProps = (state, ownProps) => ({
-	isInitialDataLoaded: state.init.isInitialDataLoaded,
+	isInitialDataLoaded: (state.xml.products.length > 0),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -43,13 +43,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 
 Index.propTypes = {
 	mixClass: React.PropTypes.string,
-//	Array: React.PropTypes.array.isRequired,
-//	Bool: React.PropTypes.bool.isRequired,
-//	Func: React.PropTypes.func.isRequired,
-//	Number: React.PropTypes.number.isRequired,
-//	Object: React.PropTypes.object.isRequired,
-//	String: React.PropTypes.string.isRequired,
-//	Symbol: React.PropTypes.symbol.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Index);

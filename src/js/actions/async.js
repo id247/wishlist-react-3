@@ -2,8 +2,6 @@ import API from '../api/api';
 import OAuth from '../api/hello';
 import XML from '../api/xml';
 
-import * as initActions from '../actions/init';
-import * as pageActions from '../actions/page';
 import * as loadingActions from '../actions/loading';
 import * as errorActions from '../actions/error';
 import * as userActions from '../actions/user';
@@ -195,7 +193,6 @@ export function getInitialData() {
 		return XML.getXML()
 		.then( xml => {
 			dispatch(setXmlData(xml));
- 			dispatch(initActions.apiInitialDataLoaded());
 
  			return getUserDataPromises();
 		})
